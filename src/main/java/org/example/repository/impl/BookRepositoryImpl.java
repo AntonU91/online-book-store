@@ -1,6 +1,7 @@
 package org.example.repository.impl;
 
 import java.util.List;
+import java.util.Optional;
 import org.example.exception.DataProcessingException;
 import org.example.model.Book;
 import org.example.repository.BookRepository;
@@ -36,7 +37,6 @@ public class BookRepositoryImpl implements BookRepository {
                 session.close();
             }
         }
-
     }
 
     @Override
@@ -48,4 +48,17 @@ public class BookRepositoryImpl implements BookRepository {
             throw new DataProcessingException("Can't find all books : ", e);
         }
     }
+
+    @Override
+    public Optional<Book> getBookById(Long id) {
+        try (Session session = sessionFactory.openSession()) {
+            Query<Book> query = session.createQuery("FROM Book b WHERE b.id=:id", Book.class);
+            query.setParameter("id", id);
+            return Optional.ofNullable(query.uniqueResult());
+        } catch (Exception e) {
+            throw new DataProcessingException("Can't find  books with id: " + id, e);
+        }
+
+    }
+
 }
