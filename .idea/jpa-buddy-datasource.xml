@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="JpbDataSourceConfig">
+    <data-source-infos>
+      <data-source-info id="860c5121-483c-4f60-827f-d732c97470cd" persistence-unit-name="Default" />
+      <data-source-info id="860c5121-483c-4f60-827f-d732c97470cd" persistence-unit-name="create-table-books" />
+    </data-source-infos>
+  </component>
+</project>
