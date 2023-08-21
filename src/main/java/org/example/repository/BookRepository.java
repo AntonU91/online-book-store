@@ -1,13 +1,19 @@
 package org.example.repository;
 
-import java.util.List;
-import java.util.Optional;
+import jakarta.transaction.Transactional;
 import org.example.model.Book;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
-public interface BookRepository {
-    Book save(Book book);
+public interface BookRepository extends JpaRepository<Book, Long> {
 
-    List<Book> findAll();
-
-    Optional<Book> getBookById(Long id);
+    @Modifying
+    @Query("UPDATE Book b SET b.title = :#{#book.title}, b.price = :#{#book.price}, "
+            + "b.isbn = :#{#book.isbn}, "
+            + "b.author = :#{#book.author}, b.description = :#{#book.description}, "
+            + "b.coverImage = :#{#book.coverImage} WHERE b.id = :id")
+    @Transactional
+    void updateBookById(@Param("id") Long id, @Param("book") Book book);
 }
