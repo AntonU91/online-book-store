@@ -1,6 +1,7 @@
 package org.example.controller;
 
 import java.util.List;
+import javax.validation.Valid;
 import org.example.dto.BookDto;
 import org.example.dto.CreateBookRequestDto;
 import org.example.service.BookService;
@@ -23,7 +24,7 @@ public class BookController {
     private BookService bookService;
 
     @PostMapping
-    public BookDto save(@RequestBody CreateBookRequestDto bookRequestDto) {
+    public BookDto save(@RequestBody @Valid CreateBookRequestDto bookRequestDto) {
         return bookService.save(bookRequestDto);
     }
 
@@ -46,7 +47,7 @@ public class BookController {
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public void updateBookById(@PathVariable("id") Long id,
-            @RequestBody CreateBookRequestDto createBookRequestDto) {
+            @RequestBody @Valid CreateBookRequestDto createBookRequestDto) {
         bookService.updateBookById(id, createBookRequestDto);
     }
 

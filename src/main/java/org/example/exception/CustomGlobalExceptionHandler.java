@@ -27,6 +27,7 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
         List<String> errors = ex.getBindingResult().getAllErrors().stream()
                                       .map(e -> getErrorMessage(e))
                                       .toList();
+        body.put("errors", errors);
         return new ResponseEntity<>(body, headers, status);
     }
 
@@ -34,7 +35,7 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
         if (e instanceof FieldError) {
             String field = ((FieldError) e).getField();
             String message = e.getDefaultMessage();
-            return field + " " + message;
+            return field + ": " + message;
         }
         return e.getDefaultMessage();
     }
