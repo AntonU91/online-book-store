@@ -3,11 +3,12 @@ package org.example.service;
 import java.util.List;
 import org.example.dto.BookDto;
 import org.example.dto.CreateBookRequestDto;
+import org.springframework.data.domain.Pageable;
 
 public interface BookService {
     BookDto save(CreateBookRequestDto bookRequestDto);
 
-    List<BookDto> findAll();
+    List<BookDto> findAll(Pageable pageable);
 
     BookDto getBookById(Long id);
 

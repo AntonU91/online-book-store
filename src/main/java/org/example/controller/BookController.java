@@ -6,6 +6,7 @@ import org.example.dto.BookDto;
 import org.example.dto.CreateBookRequestDto;
 import org.example.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,8 +30,8 @@ public class BookController {
     }
 
     @GetMapping
-    public List<BookDto> findAll() {
-        return bookService.findAll();
+    public List<BookDto> findAll(Pageable pageable) {
+        return bookService.findAll(pageable);
     }
 
     @GetMapping("/{id}")
@@ -50,5 +51,4 @@ public class BookController {
             @RequestBody @Valid CreateBookRequestDto createBookRequestDto) {
         bookService.updateBookById(id, createBookRequestDto);
     }
-
 }
