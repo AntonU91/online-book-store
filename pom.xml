@@ -62,7 +62,10 @@
             <artifactId>liquibase-maven-plugin</artifactId>
             <version>${liquibase.version}</version>
         </dependency>
-
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
@@ -84,7 +87,6 @@
                     <sourceDirectory>${project.build.testSourceDirectory}</sourceDirectory>
                 </sourceDirectories>
                 <configLocation>${maven.checkstyle.plugin.configLocation}</configLocation>
-<!--                <excludes>target/**</excludes>-->
                 <encoding>UTF-8</encoding>
                 <consoleOutput>true</consoleOutput>
                 <failsOnError>true</failsOnError>
