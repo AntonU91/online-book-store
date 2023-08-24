@@ -1,3 +1,11 @@
 databaseChangeLog:
   - include:
       file: db/create-table-books.yaml
+  - include:
+      file: db/create-table-users.yaml
+  - include:
+      file: db/create-table-roles.yaml
+  - include:
+      file: db/create-table-user_role.yaml
+  - include:
+      file: db/add-role-in-table-roles.yaml

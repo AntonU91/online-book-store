@@ -8,6 +8,8 @@ import org.example.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,8 +26,10 @@ public class BookController {
     @Autowired
     private BookService bookService;
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping
-    public BookDto save(@RequestBody @Valid CreateBookRequestDto bookRequestDto) {
+    public BookDto save(Authentication authentication,
+            @RequestBody @Valid CreateBookRequestDto bookRequestDto) {
         return bookService.save(bookRequestDto);
     }
 
@@ -41,13 +45,13 @@ public class BookController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteBookById(@PathVariable("id") Long id) {
+    public void deleteBookById(Authentication authentication, @PathVariable("id") Long id) {
         bookService.deleteBookById(id);
     }
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void updateBookById(@PathVariable("id") Long id,
+    public void updateBookById(Authentication authentication, @PathVariable("id") Long id,
             @RequestBody @Valid CreateBookRequestDto createBookRequestDto) {
         bookService.updateBookById(id, createBookRequestDto);
     }
