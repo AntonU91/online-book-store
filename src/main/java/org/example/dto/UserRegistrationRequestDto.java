@@ -3,9 +3,11 @@ package org.example.dto;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
+import org.example.validation.FieldsValueMatch;
 import org.hibernate.validator.constraints.Length;
 
 @Data
+@FieldsValueMatch(field = "password", fieldMatch = "repeatPassword", message = "Password and repeatPassword fields are not matching")
 public class UserRegistrationRequestDto {
     @Email(regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")
     private String email;
