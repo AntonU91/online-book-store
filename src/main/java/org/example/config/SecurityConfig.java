@@ -41,7 +41,8 @@ public class SecurityConfig {
                                                .permitAll()
                                                .anyRequest()
                                                .authenticated())
-                       .addFilterAfter(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                       .addFilterAfter(jwtAuthenticationFilter,
+                               UsernamePasswordAuthenticationFilter.class)
                        .httpBasic(Customizer.withDefaults())
                        .sessionManagement(
                                session -> session.sessionCreationPolicy(

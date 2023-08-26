@@ -4,11 +4,11 @@ import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import org.springframework.beans.BeanWrapperImpl;
 
-public class FieldsValueMatchValidator implements ConstraintValidator<FieldsValueMatch,Object> {
+public class FieldsValueMatchValidator implements ConstraintValidator<FieldsMatch,Object> {
     private String field;
     private String fieldMatch;
 
-    public void initialize(FieldsValueMatch constraintAnnotation) {
+    public void initialize(FieldsMatch constraintAnnotation) {
         this.field = constraintAnnotation.field();
         this.fieldMatch = constraintAnnotation.fieldMatch();
     }

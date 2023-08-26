@@ -1,5 +1,6 @@
 package org.example.security;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import org.example.model.User;
@@ -25,7 +26,14 @@ public class CustomUserDetailsService implements UserDetailsService {
         return new UserDetails() {
             @Override
             public Collection<? extends GrantedAuthority> getAuthorities() {
-                return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+                List<SimpleGrantedAuthority> authorities = new ArrayList<>();
+                if (email.startsWith("admin")) {
+                    authorities.add(
+                            new SimpleGrantedAuthority("ROLE_ADMIN"));
+                } else {
+                    authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
+                }
+                return authorities;
             }
 
             @Override

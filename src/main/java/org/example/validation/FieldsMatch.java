@@ -10,7 +10,7 @@ import java.lang.annotation.Target;
 @Constraint(validatedBy = FieldsValueMatchValidator.class)
 @Target({ ElementType.TYPE })
 @Retention(RetentionPolicy.RUNTIME)
-public @interface FieldsValueMatch {
+public @interface FieldsMatch {
 
     String message() default "Fields values don't match!";
 
@@ -22,6 +22,6 @@ public @interface FieldsValueMatch {
     @Target({ ElementType.TYPE })
     @Retention(RetentionPolicy.RUNTIME)
     @interface List {
-        FieldsValueMatch[] value();
+        FieldsMatch[] value();
     }
 }
