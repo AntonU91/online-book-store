@@ -12,9 +12,9 @@ public interface BookRepository extends JpaRepository<Book, Long> {
 
     @Modifying
     @Query("UPDATE Book b SET b.title = :#{#book.title}, b.price = :#{#book.price}, "
-           + "b.isbn = :#{#book.isbn}, "
-           + "b.author = :#{#book.author}, b.description = :#{#book.description}, "
-           + "b.coverImage = :#{#book.coverImage} WHERE b.id = :id")
+            + "b.isbn = :#{#book.isbn}, "
+            + "b.author = :#{#book.author}, b.description = :#{#book.description}, "
+            + "b.coverImage = :#{#book.coverImage} WHERE b.id = :id")
     @Transactional
     void updateBookById(@Param("id") Long id, @Param("book") Book book);
 

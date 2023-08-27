@@ -32,7 +32,6 @@ public class CategoryController {
         return categoryService.save(categoryDto);
     }
 
-
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping
     public List<CategoryDto> getAll(Pageable pageable) {

@@ -9,7 +9,6 @@ import jakarta.persistence.Table;
 import lombok.Data;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
-import org.hibernate.validator.constraints.Length;
 
 @Data
 @Entity
@@ -23,6 +22,8 @@ public class Category {
 
     @Column(nullable = false)
     private String name;
-
     private String description;
+
+    @Column(name = "is_deleted")
+    private boolean isDeleted;
 }

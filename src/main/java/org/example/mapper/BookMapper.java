@@ -22,9 +22,10 @@ public interface BookMapper {
     @AfterMapping
     default void setCategoryIds(@MappingTarget BookDto bookDto, Book book) {
         bookDto.setCategoriesId(book.getCategories().stream()
-                                      .map(Category::getId)
-                                      .toList());
+                                        .map(Category::getId)
+                                        .toList());
     }
+
     @Named("bookFromId")
     default Book bookFromId(Long id) {
         if (id == null) {

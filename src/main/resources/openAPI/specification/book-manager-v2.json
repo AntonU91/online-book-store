@@ -1,42 +1,29 @@
 {
   "openapi": "3.0.3",
   "info": {
+    "version": "2.0.0",
     "title": "Book Manager API",
-    "description": "API endpoints for managing books.",
-    "version": "1.0.0"
+    "description": "API endpoints for managing books."
   },
-  "servers": [
-    {
-      "url": "http://localhost:8080",
-      "description": "Local development server"
-    }
-  ],
-  "tags": [
-    {
-      "name": "Book management",
-      "description": "Endpoints for book managing"
-    }
-  ],
   "paths": {
     "/books": {
       "post": {
-        "tags": ["Book management"],
-        "summary": "Create/save book",
-        "description": "Create/save a new book.",
+        "summary": "Create a new book",
+        "operationId": "createBook",
+        "tags": ["Books"],
+        "security": [{ "bearerAuth": [] }],
         "requestBody": {
-          "description": "Book data to create",
           "content": {
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/CreateBookRequestDto"
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "200": {
-            "description": "Successful response with the created book data.",
+            "description": "Book created successfully",
             "content": {
               "application/json": {
                 "schema": {
@@ -48,32 +35,32 @@
         }
       },
       "get": {
-        "tags": ["Book management"],
-        "summary": "Find all books",
-        "description": "Retrieve a list of all books.",
+        "summary": "Get all books",
+        "operationId": "getAllBooks",
+        "tags": ["Books"],
         "parameters": [
           {
             "name": "page",
             "in": "query",
             "schema": {
               "type": "integer",
-              "minimum": 1
+              "default": 0
             },
-            "description": "Page number for pagination."
+            "description": "Page number"
           },
           {
             "name": "size",
             "in": "query",
             "schema": {
               "type": "integer",
-              "minimum": 1
+              "default": 20
             },
-            "description": "Number of items per page."
+            "description": "Number of items per page"
           }
         ],
         "responses": {
           "200": {
-            "description": "Successful response with a list of book data.",
+            "description": "List of books",
             "content": {
               "application/json": {
                 "schema": {
@@ -90,24 +77,22 @@
     },
     "/books/{id}": {
       "get": {
-        "tags": ["Book management"],
-        "summary": "Find book specified by id",
-        "description": "Retrieve a book by its ID.",
+        "summary": "Get book by ID",
+        "operationId": "getBookById",
+        "tags": ["Books"],
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
             "schema": {
-              "type": "integer",
-              "format": "int64"
-            },
-            "description": "ID of the book to retrieve."
+              "type": "integer"
+            }
           }
         ],
         "responses": {
           "200": {
-            "description": "Successful response with the book data.",
+            "description": "Book details",
             "content": {
               "application/json": {
                 "schema": {
@@ -119,57 +104,53 @@
         }
       },
       "delete": {
-        "tags": ["Book management"],
-        "summary": "Delete book specified by id",
-        "description": "Delete a book by its ID.",
+        "summary": "Delete a book by ID",
+        "operationId": "deleteBookById",
+        "tags": ["Books"],
+        "security": [{ "bearerAuth": [] }],
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
             "schema": {
-              "type": "integer",
-              "format": "int64"
-            },
-            "description": "ID of the book to delete."
+              "type": "integer"
+            }
           }
         ],
         "responses": {
           "204": {
-            "description": "Successful response with no content."
+            "description": "Book deleted successfully"
           }
         }
       },
       "put": {
-        "tags": ["Book management"],
-        "summary": "Update book specified by id",
-        "description": "Update a book by its ID.",
+        "summary": "Update a book by ID",
+        "operationId": "updateBookById",
+        "tags": ["Books"],
+        "security": [{ "bearerAuth": [] }],
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
             "schema": {
-              "type": "integer",
-              "format": "int64"
-            },
-            "description": "ID of the book to update."
+              "type": "integer"
+            }
           }
         ],
         "requestBody": {
-          "description": "Updated book data",
           "content": {
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/CreateBookRequestDto"
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "200": {
-            "description": "Successful response with no content."
+            "description": "Book updated successfully"
           }
         }
       }
@@ -177,39 +158,6 @@
   },
   "components": {
     "schemas": {
-      "CreateBookRequestDto": {
-        "type": "object",
-        "properties": {
-          "title": {
-            "type": "string"
-          },
-          "author": {
-            "type": "string"
-          },
-          "isbn": {
-            "type": "string"
-          },
-          "price": {
-            "type": "number",
-            "format": "float"
-          },
-          "description": {
-            "type": "string"
-          },
-          "coverImage": {
-            "type": "string"
-          }
-        },
-        "required": ["title", "author", "isbn"],
-        "example": {
-          "title": "Sample Book",
-          "author": "John Doe",
-          "isbn": "978-1234567890",
-          "price": 29.99,
-          "description": "A sample book description.",
-          "coverImage": "http://example.com/sample-cover.jpg"
-        }
-      },
       "BookDto": {
         "type": "object",
         "properties": {
@@ -228,7 +176,39 @@
           },
           "price": {
             "type": "number",
-            "format": "float"
+            "format": "decimal"
+          },
+          "description": {
+            "type": "string"
+          },
+          "coverImage": {
+            "type": "string"
+          },
+          "categoriesId": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        }
+      },
+      "CreateBookRequestDto": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "author": {
+            "type": "string"
+          },
+          "isbn": {
+            "type": "string"
+          },
+          "price": {
+            "type": "number",
+            "format": "decimal",
+            "minimum": 0
           },
           "description": {
             "type": "string"
@@ -237,15 +217,14 @@
             "type": "string"
           }
         },
-        "example": {
-          "id": 1,
-          "title": "Sample Book",
-          "author": "John Doe",
-          "isbn": "978-1234567890",
-          "price": 29.99,
-          "description": "A sample book description.",
-          "coverImage": "http://example.com/sample-cover.jpg"
-        }
+        "required": ["title", "author", "isbn"]
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
       }
     }
   }

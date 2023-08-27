@@ -27,11 +27,11 @@ public class CustomUserDetailsService implements UserDetailsService {
             @Override
             public Collection<? extends GrantedAuthority> getAuthorities() {
                 List<SimpleGrantedAuthority> authorities = new ArrayList<>();
-                if (email.startsWith("admin")) {
-                    authorities.add(
-                            new SimpleGrantedAuthority("ROLE_ADMIN"));
-                } else {
+                if (user.getRoles().isEmpty()) {
                     authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
+                } else {
+                    user.getRoles().forEach(role -> authorities.add(
+                            new SimpleGrantedAuthority("ROLE_" + role.getName().name())));
                 }
                 return authorities;
             }

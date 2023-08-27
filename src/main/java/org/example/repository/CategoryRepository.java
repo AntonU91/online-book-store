@@ -9,8 +9,9 @@ import org.springframework.data.repository.query.Param;
 
 public interface CategoryRepository extends JpaRepository<Category, Long> {
     @Modifying
-    @Query("UPDATE Category c SET c.name = :#{#category.name}, c.description=:#{#category.description} "
-           + "WHERE c.id = :id")
+    @Query("UPDATE Category c SET c.name = :#{#category.name}, "
+            + "c.description=:#{#category.description} "
+            + "WHERE c.id = :id")
     @Transactional
     void updateCategoryById(@Param("id") Long id, @Param("category") Category category);
 
