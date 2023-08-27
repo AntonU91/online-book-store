@@ -11,10 +11,12 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import java.util.Set;
 import lombok.Data;
+import org.hibernate.annotations.Where;
 
 @Entity
 @Data
 @Table(name = "users")
+@Where(clause = "is_deleted=FALSE")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

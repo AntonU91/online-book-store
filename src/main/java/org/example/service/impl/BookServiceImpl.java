@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import org.example.dto.BookDto;
+import org.example.dto.BookDtoWithoutCategoryIds;
 import org.example.dto.CreateBookRequestDto;
 import org.example.exception.EntityNotFoundException;
 import org.example.mapper.BookMapper;
@@ -23,7 +24,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public BookDto save(CreateBookRequestDto bookRequestDto) {
-        Book book = bookMapper.toModel(bookRequestDto);
+        Book book = bookMapper.toEntity(bookRequestDto);
         return bookMapper.toDto(bookRepository.save(book));
     }
 
@@ -49,7 +50,14 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public void updateBookById(Long id, CreateBookRequestDto createBookRequestDto) {
-        Book book = bookMapper.toModel(createBookRequestDto);
+        Book book = bookMapper.toEntity(createBookRequestDto);
         bookRepository.updateBookById(id, book);
+    }
+
+    @Override
+    public List<BookDtoWithoutCategoryIds> findAllByCategoryId(Long categoryId) {
+        return bookRepository.findAllByCategoryId(categoryId).stream()
+                       .map(bookMapper::toDtoWithoutCategoryIds)
+                       .toList();
     }
 }

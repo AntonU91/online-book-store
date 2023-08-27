@@ -1,0 +1,46 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1693143735285-1
+      author: toxauz (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_book_category
+                  name: book_id
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_book_category
+                  name: category_id
+                  type: BIGINT
+            tableName: book_category
+  - changeSet:
+      id: 1693143735285-10
+      author: toxauz (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: book_id
+            baseTableName: book_category
+            constraintName: fk_boocat_on_book
+            referencedColumnNames: id
+            referencedTableName: books
+  - changeSet:
+      id: 1693143735285-11
+      author: toxauz (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: category_id
+            baseTableName: book_category
+            constraintName: fk_boocat_on_category
+            referencedColumnNames: id
+            referencedTableName: categories
+
