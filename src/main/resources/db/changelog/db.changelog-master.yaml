@@ -13,3 +13,7 @@ databaseChangeLog:
       file: db/create-table-categories.yaml
   - include:
       file: db/create-table-book_category.yaml
+  - include:
+      file: db/create-table-shopping_carts.yaml
+  - include:
+      file: db/create-table-cart_items.yaml
