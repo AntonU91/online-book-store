@@ -9,11 +9,12 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
+import org.hibernate.annotations.Where;
 
 @Entity
 @Data
 @Table(name = "cart_items")
-//@Where(clause = "is_deleted=FALSE")
+@Where(clause = "is_deleted=FALSE")
 public class CartItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
