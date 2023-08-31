@@ -2,28 +2,21 @@ package org.example.service.impl;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
 import org.example.dto.CategoryDto;
 import org.example.exception.EntityNotFoundException;
 import org.example.mapper.CategoryMapper;
 import org.example.model.Category;
 import org.example.repository.CategoryRepository;
 import org.example.service.CategoryService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class CategoryServiceImpl implements CategoryService {
-
     private final CategoryRepository categoryRepository;
     private final CategoryMapper categoryMapper;
-
-    @Autowired
-    public CategoryServiceImpl(CategoryRepository categoryRepository,
-            CategoryMapper categoryMapper) {
-        this.categoryRepository = categoryRepository;
-        this.categoryMapper = categoryMapper;
-    }
 
     @Override
     public List<CategoryDto> findAll(Pageable pageable) {
@@ -49,10 +42,10 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public CategoryDto update(Long id, CategoryDto categoryDto) {
-        Category category = categoryRepository.findById(id).orElseThrow(
-                () -> new EntityNotFoundException("Can not find entity with id:" + id));
-        categoryRepository.updateCategoryById(id, category);
-        return getById(id);
+        Category categoryToUpdate = categoryMapper.toEntity(categoryDto);
+        categoryToUpdate.setId(id);
+        Category saveCategory = categoryRepository.save(categoryToUpdate);
+        return categoryMapper.toDto(saveCategory);
     }
 
     @Override

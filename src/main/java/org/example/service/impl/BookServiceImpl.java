@@ -2,7 +2,7 @@ package org.example.service.impl;
 
 import java.util.List;
 import java.util.stream.Collectors;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.example.dto.BookDto;
 import org.example.dto.BookDtoWithoutCategoryIds;
 import org.example.dto.CreateBookRequestDto;
@@ -15,12 +15,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class BookServiceImpl implements BookService {
 
-    private BookRepository bookRepository;
-
-    private BookMapper bookMapper;
+    private final BookRepository bookRepository;
+    private final BookMapper bookMapper;
 
     @Override
     public BookDto save(CreateBookRequestDto bookRequestDto) {
@@ -51,12 +50,13 @@ public class BookServiceImpl implements BookService {
     @Override
     public void updateBookById(Long id, CreateBookRequestDto createBookRequestDto) {
         Book book = bookMapper.toEntity(createBookRequestDto);
-        bookRepository.updateBookById(id, book);
+        book.setId(id);
+        bookRepository.save(book);
     }
 
     @Override
     public List<BookDtoWithoutCategoryIds> findAllByCategoryId(Long categoryId) {
-        return bookRepository.findAllByCategoryId(categoryId).stream()
+        return bookRepository.getAllByCategoriesId(categoryId).stream()
                        .map(bookMapper::toDtoWithoutCategoryIds)
                        .toList();
     }

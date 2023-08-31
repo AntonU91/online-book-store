@@ -1,6 +1,6 @@
 package org.example.service.impl;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.example.dto.UserLoginRequestDto;
 import org.example.dto.UserLoginResponseDto;
 import org.example.security.JwtUtil;
@@ -11,16 +11,17 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class AuthenticationServiceImpl implements AuthenticationService {
-    private JwtUtil jwtUtil;
-    private AuthenticationManager authenticationManager;
+    private final JwtUtil jwtUtil;
+    private final AuthenticationManager authenticationManager;
 
     @Override
     public UserLoginResponseDto authenticate(UserLoginRequestDto userLoginRequestDto) {
         final Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(userLoginRequestDto.getEmail(),
                         userLoginRequestDto.getPassword()));
+        // TODO Find out whether delete it or not
         String token = jwtUtil.generateToken(userLoginRequestDto.getEmail());
         return new UserLoginResponseDto(token);
     }
