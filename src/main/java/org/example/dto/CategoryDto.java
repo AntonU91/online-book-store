@@ -8,6 +8,5 @@ public class CategoryDto {
     private Long id;
     @Length(min = 4)
     private String name;
-
     private String description;
 }
