@@ -12,5 +12,4 @@ public interface ShoppingCartMapper {
     @Mapping(target = "cartItems", source = "cartItems")
     @Mapping(target = "userId", source = "user.id")
     ShoppingCartDto toDto(ShoppingCart shoppingCart);
-
 }
