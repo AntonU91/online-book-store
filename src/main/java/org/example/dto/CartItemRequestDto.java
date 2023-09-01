@@ -9,7 +9,6 @@ import lombok.Data;
 public class CartItemRequestDto {
     @NotNull
     private Long bookId;
-
     @Min(1)
     @Max(100)
     private int quantity;
