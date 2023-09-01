@@ -1,0 +1,37 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1693217131496-6
+      author: toxauz (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_shoppingcarts
+                  name: id
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                  name: user_id
+                  type: BIGINT
+              - column:
+                  name: is_deleted
+                  type: BOOLEAN
+            tableName: shopping_carts
+  - changeSet:
+      id: 1693217131496-14
+      author: toxauz (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: user_id
+            baseTableName: shopping_carts
+            constraintName: FK_SHOPPINGCARTS_ON_USER
+            referencedColumnNames: id
+            referencedTableName: users
+
