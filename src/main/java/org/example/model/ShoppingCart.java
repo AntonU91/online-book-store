@@ -22,7 +22,6 @@ public class ShoppingCart {
     private Long id;
     @OneToOne
     private User user;
-
     @OneToMany(mappedBy = "shoppingCart")
     private Set<CartItem> cartItems;
     @Column(name = "is_deleted")
