@@ -1,7 +1,5 @@
 package org.example.service.impl;
 
-import java.util.Set;
-import lombok.RequiredArgsConstructor;
 import org.example.dto.UserRegistrationRequestDto;
 import org.example.dto.UserResponseDto;
 import org.example.exception.EntityNotFoundException;
@@ -9,8 +7,10 @@ import org.example.exception.RegistrationException;
 import org.example.mapper.UserMapper;
 import org.example.model.Role;
 import org.example.model.User;
-import org.example.repository.RoleRepository;
 import org.example.repository.UserRepository;
+import java.util.Set;
+import lombok.RequiredArgsConstructor;
+import org.example.repository.RoleRepository;
 import org.example.service.UserService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

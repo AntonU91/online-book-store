@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 @Mapper(config = MapperConfig.class)
 @Component
-public abstract class CartItemMapper {
+public interface CartItemMapper {
     @Mapping(target = "book.id", source = "bookId")
     public abstract CartItem toEntity(CartItemRequestDto cartItemRequestDto);
 

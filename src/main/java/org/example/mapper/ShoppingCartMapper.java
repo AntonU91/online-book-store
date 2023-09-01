@@ -1,8 +1,8 @@
 package org.example.mapper;
 
 import org.example.config.MapperConfig;
-import org.example.dto.ShoppingCartDto;
 import org.example.model.ShoppingCart;
+import org.example.dto.ShoppingCartDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 

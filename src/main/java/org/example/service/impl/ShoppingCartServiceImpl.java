@@ -1,6 +1,8 @@
 package org.example.service.impl;
 
+import org.example.service.ShoppingCartService;
 import lombok.RequiredArgsConstructor;
+import org.example.dto.CartItemQuantityRequestDto;
 import org.example.dto.CartItemRequestDto;
 import org.example.dto.ShoppingCartDto;
 import org.example.exception.EntityNotFoundException;
@@ -14,7 +16,6 @@ import org.example.repository.BookRepository;
 import org.example.repository.CartItemRepository;
 import org.example.repository.ShoppingCartRepository;
 import org.example.repository.UserRepository;
-import org.example.service.ShoppingCartService;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
@@ -63,7 +64,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public void updateBookQuantity(Authentication authentication, Long cartItemId,
-            Integer bookQuantityToSave) {
+            CartItemQuantityRequestDto quantityRequestDto) {
         String email = authentication.getName();
         User user = getUser(email);
         ShoppingCart shoppingCart = shoppingCartRepository.findShoppingCartByUserId(user.getId())
@@ -75,7 +76,8 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
                         .orElseThrow(() -> new EntityNotFoundException(
                                 "Can not find shopping cart with id: " +
                                 user.getId()));
-        cartItem.setQuantity(bookQuantityToSave);
+        int cartItemQuantity = quantityRequestDto.getQuantity();
+        cartItem.setQuantity(cartItemQuantity);
         cartItemRepository.save(cartItem);
     }
 

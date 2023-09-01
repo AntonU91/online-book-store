@@ -11,12 +11,14 @@ import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 @Entity
 @Data
 @Table(name = "cart_items")
 @Where(clause = "is_deleted=FALSE")
+@SQLDelete(sql = "UPDATE cart_items SET is_deleted=TRUE WHERE id=?")
 public class CartItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
