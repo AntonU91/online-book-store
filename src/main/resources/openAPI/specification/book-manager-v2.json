@@ -6,7 +6,7 @@
     "description": "API endpoints for managing books."
   },
   "paths": {
-    "/books": {
+    "api/books": {
       "post": {
         "summary": "Create a new book",
         "operationId": "createBook",
@@ -75,7 +75,7 @@
         }
       }
     },
-    "/books/{id}": {
+    "api/books/{id}": {
       "get": {
         "summary": "Get book by ID",
         "operationId": "getBookById",
