@@ -8,4 +8,6 @@ public interface ShoppingCartService {
     void addItemToCart(Authentication authentication, CartItemRequestDto cartItemRequestDto);
 
     ShoppingCartDto getAllCartItems(Authentication authentication);
+
+    void updateBookQuantity(Authentication authentication, Long cartItemId, Integer bookQuantityToSave);
 }

@@ -61,6 +61,24 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     }
 
+    @Override
+    public void updateBookQuantity(Authentication authentication, Long cartItemId,
+            Integer bookQuantityToSave) {
+        String email = authentication.getName();
+        User user = getUser(email);
+        ShoppingCart shoppingCart = shoppingCartRepository.findShoppingCartByUserId(user.getId())
+                                            .orElseThrow(() -> new EntityNotFoundException(
+                                                    "Can not find shopping cart with id: " +
+                                                    user.getId()));
+        CartItem cartItem =
+                cartItemRepository.findByIdAndShoppingCartId(cartItemId, shoppingCart.getId())
+                        .orElseThrow(() -> new EntityNotFoundException(
+                                "Can not find shopping cart with id: " +
+                                user.getId()));
+        cartItem.setQuantity(bookQuantityToSave);
+        cartItemRepository.save(cartItem);
+    }
+
     private ShoppingCart registerNewCart(User user) {
         ShoppingCart shoppingCart = new ShoppingCart();
         shoppingCart.setUser(user);
