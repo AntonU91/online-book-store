@@ -63,5 +63,4 @@ public class CategoryController {
     public List<BookDtoWithoutCategoryIds> getBooksByCategoryId(@PathVariable("id") Long id) {
         return bookService.findAllByCategoryId(id);
     }
-
 }
