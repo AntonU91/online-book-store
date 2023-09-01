@@ -1,6 +1,5 @@
 package org.example.service.impl;
 
-import org.example.service.ShoppingCartService;
 import lombok.RequiredArgsConstructor;
 import org.example.dto.CartItemQuantityRequestDto;
 import org.example.dto.CartItemRequestDto;
@@ -16,6 +15,7 @@ import org.example.repository.BookRepository;
 import org.example.repository.CartItemRepository;
 import org.example.repository.ShoppingCartRepository;
 import org.example.repository.UserRepository;
+import org.example.service.ShoppingCartService;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 

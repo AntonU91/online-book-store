@@ -1,11 +1,11 @@
 package org.example.security;
 
-import org.example.model.User;
-import org.example.repository.UserRepository;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.example.model.User;
+import org.example.repository.UserRepository;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

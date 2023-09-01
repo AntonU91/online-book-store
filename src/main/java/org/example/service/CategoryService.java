@@ -1,7 +1,7 @@
 package org.example.service;
 
-import org.example.dto.CategoryDto;
 import java.util.List;
+import org.example.dto.CategoryDto;
 import org.springframework.data.domain.Pageable;
 
 public interface CategoryService {

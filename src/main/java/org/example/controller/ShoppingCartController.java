@@ -1,12 +1,12 @@
 package org.example.controller;
 
-import org.example.dto.CartItemRequestDto;
-import org.example.repository.CartItemRepository;
-import org.example.service.ShoppingCartService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.dto.CartItemQuantityRequestDto;
+import org.example.dto.CartItemRequestDto;
 import org.example.dto.ShoppingCartDto;
+import org.example.repository.CartItemRepository;
+import org.example.service.ShoppingCartService;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -27,7 +27,7 @@ public class ShoppingCartController {
     private final ShoppingCartService shoppingCartService;
     private final CartItemRepository cartItemRepository;
 
-    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_USER')")
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
     public void addBook(Authentication authentication,
@@ -35,13 +35,13 @@ public class ShoppingCartController {
         shoppingCartService.addItemToCart(authentication, cartItemRequestDto);
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping()
     public ShoppingCartDto getAllCartItems(Authentication authentication) {
         return shoppingCartService.getAllCartItems(authentication);
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_USER')")
     @PutMapping("/cart-items/{cartItemId}")
     @ResponseStatus(HttpStatus.OK)
     public void updateQuantity(Authentication authentication,

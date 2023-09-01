@@ -1,14 +1,14 @@
 package org.example.service.impl;
 
+import java.util.List;
+import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
 import org.example.dto.CategoryDto;
 import org.example.exception.EntityNotFoundException;
 import org.example.mapper.CategoryMapper;
 import org.example.model.Category;
 import org.example.repository.CategoryRepository;
 import org.example.service.CategoryService;
-import java.util.List;
-import java.util.stream.Collectors;
-import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 

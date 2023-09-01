@@ -1,13 +1,13 @@
 package org.example.controller;
 
-import org.example.dto.UserRegistrationRequestDto;
-import org.example.dto.UserResponseDto;
-import org.example.exception.RegistrationException;
-import org.example.service.AuthenticationService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.dto.UserLoginRequestDto;
 import org.example.dto.UserLoginResponseDto;
+import org.example.dto.UserRegistrationRequestDto;
+import org.example.dto.UserResponseDto;
+import org.example.exception.RegistrationException;
+import org.example.service.AuthenticationService;
 import org.example.service.UserService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
