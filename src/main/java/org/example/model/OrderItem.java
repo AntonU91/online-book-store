@@ -10,16 +10,20 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.math.BigDecimal;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 @Data
 @Entity
-@Table(name = "orders_items")
+@Table(name = "order_items")
 public class OrderItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @JoinColumn(name = "order_id", nullable = false)
     private Order order;
 
@@ -32,6 +36,4 @@ public class OrderItem {
 
     @Column(nullable = false)
     private BigDecimal price;
-
-
 }

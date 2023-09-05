@@ -1,0 +1,57 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1693692717851-6
+      author: toxauz (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_orders
+                  name: id
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                  name: user_id
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                  name: status
+                  type: VARCHAR(255)
+              - column:
+                  constraints:
+                    nullable: false
+                  name: total
+                  type: DECIMAL
+              - column:
+                  constraints:
+                    nullable: false
+                  name: order_date
+                  type: DATETIME
+              - column:
+                  constraints:
+                    nullable: false
+                  name: shipping_address
+                  type: VARCHAR(255)
+              - column:
+                  name: is_deleted
+                  type: BOOLEAN
+            tableName: orders
+  - changeSet:
+      id: 1693692717851-16
+      author: toxauz (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: user_id
+            baseTableName: orders
+            constraintName: FK_ORDERS_ON_USER
+            referencedColumnNames: id
+            referencedTableName: users
+
