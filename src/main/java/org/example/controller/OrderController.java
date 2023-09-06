@@ -8,6 +8,7 @@ import org.example.dto.OrderResponseDto;
 import org.example.dto.ShippingAddressDto;
 import org.example.dto.StatusDto;
 import org.example.service.OrderService;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -36,8 +37,8 @@ public class OrderController {
 
     @GetMapping
     @PreAuthorize("hasRole('ROLE_USER')")
-    public List<OrderResponseDto> getAll(Authentication authentication) {
-        return orderService.getAllOrders(authentication);
+    public List<OrderResponseDto> getAll(Authentication authentication, Pageable pageable) {
+        return orderService.getAllOrders(authentication, pageable);
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -51,8 +52,8 @@ public class OrderController {
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("/{orderId}/items")
     public List<OrderItemResponseDto> getOrderItemsOfSpecificOrder(Authentication authentication,
-            @PathVariable Long orderId) {
-        return orderService.getOrderItems(authentication, orderId);
+            @PathVariable Long orderId, Pageable pageable) {
+        return orderService.getOrderItems(authentication, orderId, pageable);
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")

@@ -22,6 +22,8 @@ import org.example.repository.OrderRepository;
 import org.example.repository.ShoppingCartRepository;
 import org.example.repository.UserRepository;
 import org.example.service.OrderService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
@@ -59,10 +61,10 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<OrderResponseDto> getAllOrders(Authentication authentication) {
+    public List<OrderResponseDto> getAllOrders(Authentication authentication, Pageable pageable) {
         String userEmail = authentication.getName();
         User user = getUser(userEmail);
-        List<Order> orders = orderRepository.findAllByUserId(user.getId());
+        Page<Order> orders = orderRepository.findAllByUserId(user.getId(), pageable);
         return orders.stream()
                        .map(orderMapper::toResponseDto)
                        .toList();
@@ -88,7 +90,8 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<OrderItemResponseDto> getOrderItems(Authentication authentication, Long orderId) {
+    public List<OrderItemResponseDto> getOrderItems(Authentication authentication, Long orderId,
+            Pageable pageable) {
         String userEmail = authentication.getName();
         User user = getUser(userEmail);
         Order order = orderRepository.findByUserIdAndId(user.getId(), orderId)
@@ -104,7 +107,8 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public OrderItemResponseDto getSpecificOrderItem(Authentication authentication, Long orderId,
             Long itemId) {
-        List<OrderItemResponseDto> orderItems = getOrderItems(authentication, orderId);
+        List<OrderItemResponseDto> orderItems =
+                getOrderItems(authentication, orderId, Pageable.unpaged());
         return orderItems.stream()
                        .filter(orderItemResponseDto -> orderItemResponseDto.getId().equals(itemId))
                        .findFirst()
