@@ -12,12 +12,12 @@ import org.springframework.stereotype.Component;
 @Component
 public interface CartItemMapper {
     @Mapping(target = "book.id", source = "bookId")
-    public abstract CartItem toEntity(CartItemRequestDto cartItemRequestDto);
+    abstract CartItem toEntity(CartItemRequestDto cartItemRequestDto);
 
     @Mapping(target = "bookId", source = "book.id")
-    public abstract CartItemRequestDto toRequestDto(CartItem cartItem);
+    CartItemRequestDto toRequestDto(CartItem cartItem);
 
     @Mapping(target = "bookId", source = "book.id")
     @Mapping(target = "bookTitle", source = "book.title")
-    public abstract CartItemResponseDto toResponseDto(CartItem cartItem);
+    CartItemResponseDto toResponseDto(CartItem cartItem);
 }

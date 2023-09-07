@@ -1,0 +1,267 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Order Manager API",
+    "version": "1.0.0",
+    "description": "API for managing orders"
+  },
+  "paths": {
+    "/api/orders": {
+      "post": {
+        "summary": "Place a new order",
+        "operationId": "placeOrder",
+        "tags": ["Orders"],
+        "requestBody": {
+          "description": "Shipping address data",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ShippingAddressDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Order placed successfully"
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      },
+      "get": {
+        "summary": "Get all orders",
+        "operationId": "getAllOrders",
+        "tags": ["Orders"],
+        "responses": {
+          "200": {
+            "description": "List of orders",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/OrderResponseDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/orders/{id}": {
+      "patch": {
+        "summary": "Change the status of an order",
+        "operationId": "changeStatus",
+        "tags": ["Orders"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the order to update",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Status data",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StatusDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Order status changed successfully"
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/orders/{orderId}/items": {
+      "get": {
+        "summary": "Get order items for a specific order",
+        "operationId": "getOrderItems",
+        "tags": ["Orders"],
+        "parameters": [
+          {
+            "name": "orderId",
+            "in": "path",
+            "description": "ID of the order to retrieve items for",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of order items",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/OrderItemResponseDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/orders/{orderId}/items/{itemId}": {
+      "get": {
+        "summary": "Get a specific order item",
+        "operationId": "getSpecificOrderItem",
+        "tags": ["Orders"],
+        "parameters": [
+          {
+            "name": "orderId",
+            "in": "path",
+            "description": "ID of the order to retrieve the item from",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "itemId",
+            "in": "path",
+            "description": "ID of the specific item to retrieve",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Order item retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderItemResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ShippingAddressDto": {
+        "type": "object",
+        "properties": {
+          "shippingAddress": {
+            "type": "string"
+          }
+        },
+        "required": ["shippingAddress"]
+      },
+      "StatusDto": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string"
+          }
+        },
+        "required": ["status"]
+      },
+      "OrderResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "userId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "orderItems": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OrderItemResponseDto"
+            }
+          },
+          "orderDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "total": {
+            "type": "integer"
+          },
+          "status": {
+            "type": "string"
+          }
+        }
+      },
+      "OrderItemResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "bookId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "quantity": {
+            "type": "integer"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  },
+  "security": [
+    {
+      "BearerAuth": []
+    }
+  ]
+}

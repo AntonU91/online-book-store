@@ -31,5 +31,4 @@ public class AuthenticationController {
             @RequestBody @Valid UserRegistrationRequestDto request) throws RegistrationException {
         return userService.register(request);
     }
-
 }
