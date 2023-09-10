@@ -10,6 +10,11 @@ services:
       - "${MYSQLDB_LOCAL_PORT}:${MYSQLDB_DOCKER_PORT}"
     networks:
       - my_network
+    healthcheck:
+      test: [ "CMD-SHELL", "mysqladmin ping -h localhost -u${MYSQLDB_USER} -p${MYSQLDB_ROOT_PASSWORD}" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   spring-app:
     env_file: ./.env
@@ -17,7 +22,7 @@ services:
       context: .
       dockerfile: Dockerfile
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:${MYSQLDB_LOCAL_PORT}/${MYSQLDB_DATABASE}?serverTimezone=Europe/Kiev
+      SPRING_DATASOURCE_URL: jdbc:mysql://localhost:${MYSQLDB_LOCAL_PORT}/${MYSQLDB_DATABASE}?serverTimezone=Europe/Kiev
       SPRING_DATASOURCE_USERNAME: ${MYSQLDB_USER}
       SPRING_DATASOURCE_PASSWORD: ${MYSQLDB_ROOT_PASSWORD}
     ports:

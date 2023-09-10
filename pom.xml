@@ -152,7 +152,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>org.OnlineBookStoreApp.java</mainClass>
+                    <mainClass>org.OnlineBookStoreApp</mainClass>
                     <layout>JAR</layout>
                 </configuration>
             </plugin>
