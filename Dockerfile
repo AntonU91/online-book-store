@@ -1,17 +1,13 @@
 # Builder stage
 FROM openjdk:17-jdk-alpine as builder
-WORKDIR application
+WORKDIR /application
 ARG JAR_FILE=target/*.jar
 COPY ${JAR_FILE} app.jar
-RUN mkdir -p target
-COPY ./target application/target
-ENTRYPOINT ["java","-jar","/app.jar"]
-
 # Final stage
 FROM openjdk:17-jdk-alpine
-WORKDIR application
-COPY --from=builder application/target ./
-ENTRYPOINT ["java", "org.springframework.boot.loader.JarLauncher"]
+WORKDIR /application
+COPY --from=builder /application/app.jar app.jar
+ENTRYPOINT ["java","-jar","app.jar"]
 EXPOSE 8080
 
 
