@@ -1,6 +1,7 @@
 version: '1'
 services:
   mysql:
+    container_name: database
     image: mysql:8.0
     env_file: ./.env
     environment:
@@ -17,12 +18,13 @@ services:
       retries: 5
 
   spring-app:
+    container_name: app
     env_file: ./.env
     build:
       context: .
       dockerfile: Dockerfile
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://localhost:${MYSQLDB_LOCAL_PORT}/${MYSQLDB_DATABASE}?serverTimezone=Europe/Kiev
+      SPRING_DATASOURCE_URL: jdbc:mysql://database:3306/${MYSQLDB_DATABASE}?serverTimezone=Europe/Kiev
       SPRING_DATASOURCE_USERNAME: ${MYSQLDB_USER}
       SPRING_DATASOURCE_PASSWORD: ${MYSQLDB_ROOT_PASSWORD}
     ports:
@@ -35,3 +37,4 @@ services:
 
 networks:
   my_network:
+    driver: bridge
