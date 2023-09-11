@@ -24,7 +24,7 @@ services:
       context: .
       dockerfile: Dockerfile
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://database:3306/${MYSQLDB_DATABASE}?serverTimezone=Europe/Kiev
+      SPRING_DATASOURCE_URL: jdbc:mysql://database:${MYSQLDB_DOCKER_PORT}/${MYSQLDB_DATABASE}?serverTimezone=Europe/Kiev
       SPRING_DATASOURCE_USERNAME: ${MYSQLDB_USER}
       SPRING_DATASOURCE_PASSWORD: ${MYSQLDB_ROOT_PASSWORD}
     ports:
