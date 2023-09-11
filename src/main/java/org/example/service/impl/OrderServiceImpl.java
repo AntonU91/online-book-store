@@ -75,14 +75,15 @@ public class OrderServiceImpl implements OrderService {
             Long id) {
         String userEmail = authentication.getName();
         User user = getUser(userEmail);
-        orderRepository.findByUserIdAndId(user.getId(), id)
-                .orElseThrow(() -> new EntityNotFoundException(
-                        "Can not find order with user specified user id:"
-                        + user.getId() + " and order id: "
-                        + id));
+        Order order = orderRepository.findByUserIdAndId(user.getId(), id)
+                              .orElseThrow(() -> new EntityNotFoundException(
+                                      "Can not find order with user specified user id:"
+                                      + user.getId() + " and order id: "
+                                      + id));
         try {
             Order.Status newStatus = Order.Status.valueOf(statusDto.getStatus());
-            orderRepository.updateStatusById(id, newStatus);
+            order.setStatus(newStatus);
+            orderRepository.save(order);
         } catch (IllegalArgumentException e) {
             throw new DataProcessingException("Invalid status name:" + statusDto.getStatus(), e);
         }
@@ -115,6 +116,18 @@ public class OrderServiceImpl implements OrderService {
                        .orElseThrow(
                                () -> new EntityNotFoundException(
                                        "Can not find specified order item"));
+    }
+
+    @Override
+    public void deleteById(Authentication authentication, Long orderId) {
+        String userEmail = authentication.getName();
+        User user = getUser(userEmail);
+        Order order = orderRepository.findByUserIdAndId(user.getId(), orderId)
+                              .orElseThrow(() -> new EntityNotFoundException(
+                                      "Can not find order with user specified user id:"
+                                      + user.getId() + " and order id: "
+                                      + orderId));
+        orderRepository.deleteById(order.getId());
     }
 
     private User getUser(String email) {

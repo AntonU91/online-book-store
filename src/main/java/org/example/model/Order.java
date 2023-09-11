@@ -16,10 +16,14 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Set;
 import lombok.Data;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 @Entity
 @Table(name = "orders")
 @Data
+@Where(clause = "is_deleted=FALSE")
+@SQLDelete(sql = "UPDATE orders SET is_deleted=TRUE WHERE id=?")
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
