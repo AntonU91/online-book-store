@@ -28,14 +28,14 @@ public class BookController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping
-    public BookDto save(Authentication authentication,
+    public BookDto save(
             @RequestBody @Valid CreateBookRequestDto bookRequestDto) {
         return bookService.save(bookRequestDto);
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping
-    public List<BookDto> findAll(Authentication authentication, Pageable pageable) {
+    public List<BookDto> findAll( Pageable pageable) {
         return bookService.findAll(pageable);
     }
 
