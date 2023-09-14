@@ -101,13 +101,13 @@ class BookServiceTest {
         Page<Book> bookPage = new PageImpl<>(bookList);
         when(bookRepository.findAll(any(Pageable.class))).thenReturn(bookPage);
 
-        List<BookDto> expected = new ArrayList<>();
         BookDto bookDto1 = new BookDto();
         bookDto1.setId(1L);
         bookDto1.setTitle("Book 1");
         bookDto1.setAuthor("Author 1");
         bookDto1.setIsbn("12345-566");
         bookDto1.setPrice(new BigDecimal("23.33"));
+        List<BookDto> expected = new ArrayList<>();
         expected.add(bookDto1);
 
         BookDto bookDto2 = new BookDto();
@@ -162,13 +162,12 @@ class BookServiceTest {
     @Test
     @DisplayName("Verify book is updated by ID")
     public void updateBookById_WithValidId_ShouldUpdateBook() {
-        Long bookId = 1L;
         CreateBookRequestDto bookRequestDto = new CreateBookRequestDto();
         bookRequestDto.setTitle("Book 1");
         bookRequestDto.setAuthor("Author 1");
         bookRequestDto.setIsbn("12345-566");
         bookRequestDto.setPrice(new BigDecimal("23.33"));
-
+        Long bookId = 1L;
         when(bookMapper.toEntity(bookRequestDto)).thenReturn(book1);
         bookService.updateBookById(bookId, bookRequestDto);
 
@@ -183,13 +182,14 @@ class BookServiceTest {
 
         when(bookRepository.getAllByCategoriesId(anyLong())).thenReturn(bookList);
 
-        List<BookDtoWithoutCategoryIds> expected = new ArrayList<>();
         BookDtoWithoutCategoryIds bookDtoWithoutCategoryIds = new BookDtoWithoutCategoryIds();
         bookDtoWithoutCategoryIds.setId(1L);
         bookDtoWithoutCategoryIds.setTitle("Book 1");
         bookDtoWithoutCategoryIds.setAuthor("Author 1");
         bookDtoWithoutCategoryIds.setIsbn("12345-566");
         bookDtoWithoutCategoryIds.setPrice(new BigDecimal("23.33"));
+
+        List<BookDtoWithoutCategoryIds> expected = new ArrayList<>();
         expected.add(bookDtoWithoutCategoryIds);
         when(bookMapper.toDtoWithoutCategoryIds(any(Book.class))).thenReturn(expected.get(0));
 
