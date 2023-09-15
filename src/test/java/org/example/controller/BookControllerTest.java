@@ -11,6 +11,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -22,7 +23,7 @@ import org.springframework.web.context.WebApplicationContext;
 import org.testcontainers.shaded.org.apache.commons.lang3.builder.EqualsBuilder;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-
+//@AutoConfigureMockMvc
 //@ContextConfiguration(initializers = ContextInitializer.class)
 class BookControllerTest {
     protected static MockMvc mockMvc;
@@ -32,13 +33,13 @@ class BookControllerTest {
     @BeforeAll
     static void beforeAll(@Autowired WebApplicationContext applicationContext) {
         mockMvc = MockMvcBuilders.webAppContextSetup(applicationContext)
-                          .apply(SecurityMockMvcConfigurers.springSecurity())
+                          //.apply(SecurityMockMvcConfigurers.springSecurity())
                           .build();
     }
 
     @Test
     @DisplayName("Create a new book")
-    @WithMockUser(username = "admin", roles = {"ADMIN"})
+    //@WithMockUser(username = "admin", roles = {"ADMIN"})
     void createBook_ValidCreateBookRequestDto_Success() throws Exception {
         CreateBookRequestDto bookRequestDto = new CreateBookRequestDto();
         bookRequestDto.setTitle("Book 1");
@@ -65,4 +66,5 @@ class BookControllerTest {
         Assertions.assertNotNull(actual.getId());
         EqualsBuilder.reflectionEquals(expected, actual, "id");
     }
+
 }
