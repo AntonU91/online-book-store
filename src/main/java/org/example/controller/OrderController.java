@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -62,5 +63,12 @@ public class OrderController {
             @PathVariable Long orderId,
             @PathVariable Long itemId) {
         return orderService.getSpecificOrderItem(authentication, orderId, itemId);
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @DeleteMapping("/{orderId}")
+    @ResponseStatus(HttpStatus.OK)
+    public void deleteById(Authentication authentication, @PathVariable Long orderId) {
+        orderService.deleteById(authentication, orderId);
     }
 }

@@ -1,0 +1,40 @@
+version: '1'
+services:
+  mysql:
+    container_name: database
+    image: mysql:8.0
+    env_file: ./.env
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQLDB_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQLDB_DATABASE}
+    ports:
+      - "${MYSQLDB_LOCAL_PORT}:${MYSQLDB_DOCKER_PORT}"
+    networks:
+      - my_network
+    healthcheck:
+      test: [ "CMD-SHELL", "mysqladmin ping -h localhost -u${MYSQLDB_USER} -p${MYSQLDB_ROOT_PASSWORD}" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  spring-app:
+    container_name: app
+    env_file: ./.env
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://database:${MYSQLDB_DOCKER_PORT}/${MYSQLDB_DATABASE}?serverTimezone=Europe/Kiev
+      SPRING_DATASOURCE_USERNAME: ${MYSQLDB_USER}
+      SPRING_DATASOURCE_PASSWORD: ${MYSQLDB_ROOT_PASSWORD}
+    ports:
+      - "${SPRING_LOCAL_PORT}:${SPRING_DOCKER_PORT}"
+      - "${DEBUG_PORT}:${DEBUG_PORT}"
+    depends_on:
+      - mysql
+    networks:
+      - my_network
+
+networks:
+  my_network:
+    driver: bridge

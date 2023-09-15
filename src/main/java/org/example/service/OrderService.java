@@ -20,4 +20,6 @@ public interface OrderService {
 
     OrderItemResponseDto getSpecificOrderItem(Authentication authentication, Long orderId,
             Long itemId);
+
+    void deleteById(Authentication authentication, Long orderId);
 }
