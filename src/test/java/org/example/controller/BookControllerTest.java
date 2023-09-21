@@ -25,6 +25,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -70,6 +71,7 @@ class BookControllerTest {
     @DisplayName("Create a new book")
     @Sql(scripts = {"classpath:db/book/delete-books-from-books-table.sql"},
             executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    @WithMockUser(username = "test", password = "test", roles = {"ADMIN"})
     void createBook_ValidCreateBookRequestDto_Success() throws Exception {
         BookDto expected = new BookDto();
         expected.setId(1L);
