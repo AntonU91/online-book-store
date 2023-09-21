@@ -34,7 +34,6 @@ import org.testcontainers.shaded.org.apache.commons.lang3.builder.EqualsBuilder;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 //@AutoConfigureMockMvc
-//@ContextConfiguration(initializers = ContextInitializer.class)
 class BookControllerTest {
     public static final Long NON_EXISTED_ID = 100L;
     protected static MockMvc mockMvc;
@@ -42,8 +41,8 @@ class BookControllerTest {
     private ObjectMapper objectMapper;
     @Autowired
     private BookService bookService;
-    CreateBookRequestDto bookRequestDto;
-    CreateBookRequestDto bookRequestDto2;
+    private CreateBookRequestDto bookRequestDto;
+    private CreateBookRequestDto bookRequestDto2;
 
     @BeforeEach
     void setUp() {

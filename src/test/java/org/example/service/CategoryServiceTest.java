@@ -112,7 +112,6 @@ class CategoryServiceTest {
     @Test
     @DisplayName("Verify category is updated correctly")
     public void updateCategory_WithValidIdAndCategoryDto_ShouldReturnUpdatedCategory() {
-        Long categoryId = 1L;
         CategoryDto expected = new CategoryDto();
         expected.setId(category1.getId());
         expected.setDescription("Updated description");
@@ -127,6 +126,7 @@ class CategoryServiceTest {
         when(categoryRepository.save(updated)).thenReturn(updated);
         when(categoryMapper.toDto(updated)).thenReturn(expected);
 
+        Long categoryId = 1L;
         CategoryDto actual = categoryService.update(categoryId, expected);
 
         Assertions.assertEquals(expected, actual);

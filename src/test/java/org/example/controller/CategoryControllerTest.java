@@ -42,8 +42,7 @@ class CategoryControllerTest {
     private CategoryDto categoryDto1;
     private CategoryDto categoryDto2;
     @Autowired
-    BookMapper bookMapper;
-
+    private BookMapper bookMapper;
 
     @BeforeAll
     static void beforeAll(@Autowired WebApplicationContext applicationContext) {
@@ -152,3 +151,4 @@ class CategoryControllerTest {
                 .andExpect(status().isNotFound());
     }
 }
+

@@ -25,7 +25,7 @@ class BookRepositoryTest {
     @Sql(scripts = {"classpath:db/book_category/delete-data-from-book_category-table.sql",
             "classpath:db/book/delete-books-from-books-table.sql",
             "classpath:db/category/delete-category-from-categories-table.sql"
-    }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+                    }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void findAllByCategoryId_ValidId_ShouldReturnListOfBook() {
         Long categoryID = 1L;
         List<Book> booksList = bookRepository.getAllByCategoriesId(categoryID);
