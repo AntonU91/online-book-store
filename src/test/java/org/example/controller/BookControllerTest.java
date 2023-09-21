@@ -70,7 +70,7 @@ class BookControllerTest {
     @Test
     @DisplayName("Create a new book")
     @Sql(scripts = {"classpath:db/book/delete-books-from-books-table.sql"},
-            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+            executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     void createBook_ValidCreateBookRequestDto_Success() throws Exception {
         BookDto expected = new BookDto();
         expected.setId(1L);
@@ -95,7 +95,7 @@ class BookControllerTest {
     @Test
     @DisplayName("Get all books")
     @Sql(scripts = {"classpath:db/book/delete-books-from-books-table.sql"},
-            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+            executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     void getAllBooks_ReturnAllAvailableBook() throws Exception {
         BookDto savedBook1 = bookService.save(bookRequestDto);
         BookDto savedBook2 = bookService.save(bookRequestDto2);
@@ -122,7 +122,7 @@ class BookControllerTest {
     @Test
     @DisplayName("Update an existing book")
     @Sql(scripts = {"classpath:db/book/delete-books-from-books-table.sql"},
-            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+            executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     void updateBook_ValidUpdateBookRequestDto_Success() throws Exception {
         BookDto expected = bookService.save(bookRequestDto);
         expected.setTitle("Updated Title");
@@ -140,7 +140,7 @@ class BookControllerTest {
     @Test
     @DisplayName("Delete an existing book")
     @Sql(scripts = {"classpath:db/book/delete-books-from-books-table.sql"},
-            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+            executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     void deleteBook_ValidId_Success() throws Exception {
         BookDto savedBook = bookService.save(bookRequestDto);
 
@@ -151,7 +151,7 @@ class BookControllerTest {
     @Test
     @DisplayName("Create a new book with invalid data")
     @Sql(scripts = {"classpath:db/book/delete-books-from-books-table.sql"},
-            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+            executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     void createBook_InvalidData_BadRequest() throws Exception {
         CreateBookRequestDto invalidBookRequest = new CreateBookRequestDto();
         invalidBookRequest.setTitle("");
@@ -166,7 +166,7 @@ class BookControllerTest {
     @Test
     @DisplayName("Get a book by existed id")
     @Sql(scripts = {"classpath:db/book/delete-books-from-books-table.sql"},
-            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+            executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     void getBookById_ValidId_Success() throws Exception {
         BookDto expected = bookService.save(bookRequestDto);
 
@@ -182,10 +182,10 @@ class BookControllerTest {
     @Test
     @DisplayName("Get a book by non-existed id")
     @Sql(scripts = {"classpath:db/book/delete-books-from-books-table.sql"},
-            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+            executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     void getBookById_NonExistedId_BadRequest() throws Exception {
         mockMvc.perform(get("/api/books/{id}", NON_EXISTED_ID))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isNotFound());
         Assertions.assertThrows(EntityNotFoundException.class, () -> bookService.getBookById(
                 NON_EXISTED_ID));
     }

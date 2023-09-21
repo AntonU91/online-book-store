@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -38,10 +39,12 @@ public class SecurityConfig {
                        .csrf(AbstractHttpConfigurer::disable)
                        .authorizeHttpRequests(
                                auth -> auth.requestMatchers(
-                                               "/api/auth/**")
+                                               "/api/auth/**", "/h2-console/**")
                                                .permitAll()
                                                .anyRequest()
                                                .authenticated())
+                       .headers(headers -> headers.frameOptions(
+                               HeadersConfigurer.FrameOptionsConfig::sameOrigin))
                        .addFilterAfter(jwtAuthenticationFilter,
                                UsernamePasswordAuthenticationFilter.class)
                        .httpBasic(Customizer.withDefaults())
@@ -50,6 +53,7 @@ public class SecurityConfig {
                                        SessionCreationPolicy.STATELESS))
                        .userDetailsService(customUserDetailsService)
                        .build();
+
     }
 
     @Bean

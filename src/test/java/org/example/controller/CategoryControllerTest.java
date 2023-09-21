@@ -64,7 +64,7 @@ class CategoryControllerTest {
     @Test
     @DisplayName("Create a new category")
     @Sql(scripts = {"classpath:db/category/delete-category-from-categories-table.sql"},
-            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+            executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     void createCategory_ValidCategoryDto_Success() throws Exception {
         CategoryDto expected = categoryService.save(categoryDto1);
         String jsonRequest = objectMapper.writeValueAsString(categoryDto1);
@@ -82,7 +82,7 @@ class CategoryControllerTest {
     @Test
     @DisplayName("Create a new category with invalid data")
     @Sql(scripts = {"classpath:db/category/delete-category-from-categories-table.sql"},
-            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+            executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     void createCategory_InvalidData_BadRequest() throws Exception {
         CategoryDto invalidCategoryRequest = new CategoryDto();
         invalidCategoryRequest.setDescription("Some description");
@@ -100,7 +100,7 @@ class CategoryControllerTest {
     @Test
     @DisplayName("Get all categories")
     @Sql(scripts = {"classpath:db/category/delete-category-from-categories-table.sql"},
-            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+            executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     void getAllCategories_ReturnAllCategories() throws Exception {
         CategoryDto savedCategory1 = categoryService.save(categoryDto1);
         CategoryDto savedCategory2 = categoryService.save(categoryDto2);
@@ -122,7 +122,7 @@ class CategoryControllerTest {
     @Test
     @DisplayName("Update a category")
     @Sql(scripts = {"classpath:db/category/delete-category-from-categories-table.sql"},
-            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+            executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     void updateCategory_ValidCategoryDto_Success() throws Exception {
         CategoryDto savedCategory = categoryService.save(categoryDto1);
         savedCategory.setName("Updated Category");
@@ -139,7 +139,7 @@ class CategoryControllerTest {
     @Test
     @DisplayName("Delete a category")
     @Sql(scripts = {"classpath:db/category/delete-category-from-categories-table.sql"},
-            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+            executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     void deleteCategory_ValidId_Success() throws Exception {
         CategoryDto savedCategory = categoryService.save(categoryDto1);
 
