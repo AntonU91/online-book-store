@@ -23,6 +23,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -46,7 +48,9 @@ class CategoryControllerTest {
 
     @BeforeAll
     static void beforeAll(@Autowired WebApplicationContext applicationContext) {
-        mockMvc = MockMvcBuilders.webAppContextSetup(applicationContext).build();
+        mockMvc = MockMvcBuilders.webAppContextSetup(applicationContext)
+                          .apply(SecurityMockMvcConfigurers.springSecurity())
+                          .build();
     }
 
     @BeforeEach
@@ -64,6 +68,7 @@ class CategoryControllerTest {
     @DisplayName("Create a new category")
     @Sql(scripts = {"classpath:db/category/delete-category-from-categories-table.sql"},
             executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    @WithMockUser(username = "test", password = "test", roles = {"ADMIN", "USER"})
     void createCategory_ValidCategoryDto_Success() throws Exception {
         CategoryDto expected = categoryService.save(categoryDto1);
         String jsonRequest = objectMapper.writeValueAsString(categoryDto1);
@@ -82,6 +87,7 @@ class CategoryControllerTest {
     @DisplayName("Create a new category with invalid data")
     @Sql(scripts = {"classpath:db/category/delete-category-from-categories-table.sql"},
             executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    @WithMockUser(username = "test", password = "test", roles = {"ADMIN", "USER"})
     void createCategory_InvalidData_BadRequest() throws Exception {
         CategoryDto invalidCategoryRequest = new CategoryDto();
         invalidCategoryRequest.setDescription("Some description");
@@ -100,6 +106,7 @@ class CategoryControllerTest {
     @DisplayName("Get all categories")
     @Sql(scripts = {"classpath:db/category/delete-category-from-categories-table.sql"},
             executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    @WithMockUser(username = "test", password = "test", roles = {"ADMIN", "USER"})
     void getAllCategories_ReturnAllCategories() throws Exception {
         CategoryDto savedCategory1 = categoryService.save(categoryDto1);
         CategoryDto savedCategory2 = categoryService.save(categoryDto2);
@@ -122,6 +129,7 @@ class CategoryControllerTest {
     @DisplayName("Update a category")
     @Sql(scripts = {"classpath:db/category/delete-category-from-categories-table.sql"},
             executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    @WithMockUser(username = "test", password = "test", roles = {"ADMIN", "USER"})
     void updateCategory_ValidCategoryDto_Success() throws Exception {
         CategoryDto savedCategory = categoryService.save(categoryDto1);
         savedCategory.setName("Updated Category");
@@ -139,6 +147,7 @@ class CategoryControllerTest {
     @DisplayName("Delete a category")
     @Sql(scripts = {"classpath:db/category/delete-category-from-categories-table.sql"},
             executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    @WithMockUser(username = "test", password = "test", roles = {"ADMIN", "USER"})
     void deleteCategory_ValidId_Success() throws Exception {
         CategoryDto savedCategory = categoryService.save(categoryDto1);
 
