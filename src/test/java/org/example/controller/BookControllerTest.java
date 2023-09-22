@@ -26,6 +26,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -63,7 +64,7 @@ class BookControllerTest {
     @BeforeAll
     static void beforeAll(@Autowired WebApplicationContext applicationContext) {
         mockMvc = MockMvcBuilders.webAppContextSetup(applicationContext)
-                          //.apply(SecurityMockMvcConfigurers.springSecurity())
+                          .apply(SecurityMockMvcConfigurers.springSecurity())
                           .build();
     }
 
