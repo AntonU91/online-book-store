@@ -1,0 +1,2 @@
+DELETE FROM cart_items;
+# ALTER TABLE cart_items ALTER COLUMN id RESTART WITH 1;

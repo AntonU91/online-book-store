@@ -1,0 +1,3 @@
+DELETE FROM user_role;
+ALTER TABLE  user_role ALTER COLUMN user_id RESTART WITH 1;
+# ALTER TABLE  user_role ALTER COLUMN role_id RESTART WITH 1;
