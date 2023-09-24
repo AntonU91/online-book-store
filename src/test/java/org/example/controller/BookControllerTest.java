@@ -69,7 +69,7 @@ class BookControllerTest {
 
     @Test
     @DisplayName("Create a new book")
-    @Sql(scripts = {"classpath:db/book/delete-books-from-books-table.sql"},
+    @Sql(scripts = {"classpath:db/book-controller-test/after/delete-books-from-books-table.sql"},
             executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     @WithMockUser(username = "test", password = "test", roles = {"ADMIN", "USER"})
     void createBook_ValidCreateBookRequestDto_Success() throws Exception {
@@ -95,7 +95,7 @@ class BookControllerTest {
 
     @Test
     @DisplayName("Get all books")
-    @Sql(scripts = {"classpath:db/book/delete-books-from-books-table.sql"},
+    @Sql(scripts = {"classpath:db/book-controller-test/after/delete-books-from-books-table.sql"},
             executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     @WithMockUser(username = "test", password = "test", roles = {"ADMIN", "USER"})
     void getAllBooks_ReturnAllAvailableBook() throws Exception {
@@ -123,7 +123,7 @@ class BookControllerTest {
 
     @Test
     @DisplayName("Update an existing book")
-    @Sql(scripts = {"classpath:db/book/delete-books-from-books-table.sql"},
+    @Sql(scripts = {"classpath:db/book-controller-test/after/delete-books-from-books-table.sql"},
             executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     @WithMockUser(username = "test", password = "test", roles = {"ADMIN", "USER"})
     void updateBook_ValidUpdateBookRequestDto_Success() throws Exception {
@@ -142,7 +142,7 @@ class BookControllerTest {
 
     @Test
     @DisplayName("Delete an existing book")
-    @Sql(scripts = {"classpath:db/book/delete-books-from-books-table.sql"},
+    @Sql(scripts = {"classpath:db/book-controller-test/after/delete-books-from-books-table.sql"},
             executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     @WithMockUser(username = "test", password = "test", roles = {"ADMIN", "USER"})
     void deleteBook_ValidId_Success() throws Exception {
@@ -154,7 +154,7 @@ class BookControllerTest {
 
     @Test
     @DisplayName("Create a new book with invalid data")
-    @Sql(scripts = {"classpath:db/book/delete-books-from-books-table.sql"},
+    @Sql(scripts = {"classpath:db/book-controller-test/after/delete-books-from-books-table.sql"},
             executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     @WithMockUser(username = "test", password = "test", roles = {"ADMIN", "USER"})
     void createBook_InvalidData_BadRequest() throws Exception {
@@ -170,7 +170,7 @@ class BookControllerTest {
 
     @Test
     @DisplayName("Get a book by existed id")
-    @Sql(scripts = {"classpath:db/book/delete-books-from-books-table.sql"},
+    @Sql(scripts = {"classpath:db/book-controller-test/after/delete-books-from-books-table.sql"},
             executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     @WithMockUser(username = "test", password = "test", roles = {"ADMIN", "USER"})
     void getBookById_ValidId_Success() throws Exception {
@@ -187,7 +187,7 @@ class BookControllerTest {
 
     @Test
     @DisplayName("Get a book by non-existed id")
-    @Sql(scripts = {"classpath:db/book/delete-books-from-books-table.sql"},
+    @Sql(scripts = {"classpath:db/book-controller-test/after/delete-books-from-books-table.sql"},
             executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     @WithMockUser(username = "test", password = "test", roles = {"ADMIN", "USER"})
     void getBookById_NonExistedId_BadRequest() throws Exception {

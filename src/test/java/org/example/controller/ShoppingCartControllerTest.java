@@ -7,10 +7,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.math.BigDecimal;
 import org.example.dto.BookDto;
+import org.example.dto.CartItemQuantityRequestDto;
 import org.example.dto.CartItemRequestDto;
+import org.example.dto.CartItemResponseDto;
 import org.example.dto.CreateBookRequestDto;
 import org.example.dto.ShoppingCartDto;
-import org.example.repository.CartItemRepository;
 import org.example.service.BookService;
 import org.example.service.ShoppingCartService;
 import org.junit.jupiter.api.BeforeAll;
@@ -45,9 +46,6 @@ public class ShoppingCartControllerTest {
 
     @Autowired
     private BookService bookService;
-    private BookDto book;
-    @Autowired
-    private CartItemRepository cartItemRepository;
 
     @BeforeAll
     private static void beforeAll(@Autowired WebApplicationContext applicationContext) {
@@ -63,36 +61,32 @@ public class ShoppingCartControllerTest {
     @Test
     @DisplayName("Add a book to the shopping cart")
     @WithMockUser(username = "test@net", password = "test", roles = {"USER", "ADMIN"})
-//    @Sql(scripts = {
-//            "classpath:db/book/insert-books-to-books-table.sql",
-//            "classpath:db/role/insert-roles-to-roles-table.sql",
-//            "classpath:db/user/insert-user-to-user-table.sql",
-//            "classpath:db/role_user/insert-role_user-to-role_user-table.sql",
-//            "classpath:db/shopping_cart/insert-shopping_cart-to-shopping_carts-table.sql",
-//            "classpath:db/cart_item/insert-cart_item-to-cart_items-table.sql",
-//    }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = {
-            "classpath:db/cart_item/delete-cart_items-from-cart_items-table.sql",
-            "classpath:db/shopping_cart/delete-shopping_carts-from-shopping_carts-table.sql",
-            "classpath:db/role_user/delete-roles_users-from-user_role-table.sql",
-            "classpath:db/user/delete-users-from-users-table.sql",
-            "classpath:db/role/delete-roles-from-roles-table.sql",
-            "classpath:db/book_category/delete-data-from-book_category-table.sql"
+            "classpath:db/shopping-cart-controller-tests/before/insert-books-to-books-table.sql",
+            "classpath:db/shopping-cart-controller-tests/before/insert-user-to-user-table.sql",
+            "classpath:db/shopping-cart-controller-tests/before/insert-role_user-to-role_user-table.sql",
+            "classpath:db/shopping-cart-controller-tests/before/insert-shopping_cart-to-shopping_carts-table.sql",
+            "classpath:db/shopping-cart-controller-tests/before/insert-cart_item-to-cart_items-table.sql"
+    }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {
+            "classpath:db/shopping-cart-controller-tests/after/delete-cart_items-from-cart_items-table.sql",
+            "classpath:db/shopping-cart-controller-tests/after/delete-shopping_carts-from-shopping_carts-table.sql",
+            "classpath:db/shopping-cart-controller-tests/after/delete-roles_users-from-user_role-table.sql",
+            "classpath:db/shopping-cart-controller-tests/after/delete-users-from-users-table.sql",
+            "classpath:db/shopping-cart-controller-tests/after/delete-books-from-books-table.sql"
     }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void addBookToCart_ValidCartItemRequest_Success() throws Exception {
-       CreateBookRequestDto bookRequestDto = new CreateBookRequestDto();
+        CreateBookRequestDto bookRequestDto = new CreateBookRequestDto();
         bookRequestDto.setTitle("Book 1");
         bookRequestDto.setAuthor("Author 1");
         bookRequestDto.setIsbn("12345-566");
         bookRequestDto.setPrice(new BigDecimal("23.33"));
 
-        BookDto savedBook = bookService.save(bookRequestDto);
+        BookDto savedBook = bookService.getBookById(1L);
         CartItemRequestDto cartItemRequestDto = new CartItemRequestDto();
         cartItemRequestDto.setBookId(savedBook.getId());
         cartItemRequestDto.setQuantity(10);
-
         String jsonRequest = objectMapper.writeValueAsString(cartItemRequestDto);
-
         mockMvc.perform(post("/api/cart")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(jsonRequest))
@@ -100,28 +94,25 @@ public class ShoppingCartControllerTest {
     }
 
     @Test
-    @DisplayName("Add a book to the shopping cart")
+    @DisplayName("Add an invalid book item to the shopping cart")
     @WithMockUser(username = "test@net", password = "test", roles = {"USER", "ADMIN"})
-//    @Sql(scripts = {
-//            "classpath:db/book/insert-books-to-books-table.sql",
-//            "classpath:db/role/insert-roles-to-roles-table.sql",
-//            "classpath:db/user/insert-user-to-user-table.sql",
-//            "classpath:db/role_user/insert-role_user-to-role_user-table.sql",
-//            "classpath:db/shopping_cart/insert-shopping_cart-to-shopping_carts-table.sql",
-//            "classpath:db/cart_item/insert-cart_item-to-cart_items-table.sql",
-//    }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = {
-            "classpath:db/cart_item/delete-cart_items-from-cart_items-table.sql",
-            "classpath:db/shopping_cart/delete-shopping_carts-from-shopping_carts-table.sql",
-            "classpath:db/role_user/delete-roles_users-from-user_role-table.sql",
-            "classpath:db/user/delete-users-from-users-table.sql",
-            "classpath:db/role/delete-roles-from-roles-table.sql",
-            "classpath:db/book_category/delete-data-from-book_category-table.sql"
+            "classpath:db/shopping-cart-controller-tests/before/insert-books-to-books-table.sql",
+            "classpath:db/shopping-cart-controller-tests/before/insert-user-to-user-table.sql",
+            "classpath:db/shopping-cart-controller-tests/before/insert-role_user-to-role_user-table.sql",
+            "classpath:db/shopping-cart-controller-tests/before/insert-shopping_cart-to-shopping_carts-table.sql",
+            "classpath:db/shopping-cart-controller-tests/before/insert-cart_item-to-cart_items-table.sql"
+    }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {
+            "classpath:db/shopping-cart-controller-tests/after/delete-cart_items-from-cart_items-table.sql",
+            "classpath:db/shopping-cart-controller-tests/after/delete-shopping_carts-from-shopping_carts-table.sql",
+            "classpath:db/shopping-cart-controller-tests/after/delete-roles_users-from-user_role-table.sql",
+            "classpath:db/shopping-cart-controller-tests/after/delete-users-from-users-table.sql",
+            "classpath:db/shopping-cart-controller-tests/after/delete-books-from-books-table.sql"
     }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void addBookToCart_InvalidCartItemRequest_BadRequest() throws Exception {
         CartItemRequestDto cartItemRequestDto = new CartItemRequestDto();
-        cartItemRequestDto.setBookId(book.getId());
-
+        cartItemRequestDto.setBookId(1L);
         String jsonRequest = objectMapper.writeValueAsString(cartItemRequestDto);
         mockMvc.perform(post("/api/cart")
                                 .contentType(MediaType.APPLICATION_JSON)
@@ -132,21 +123,19 @@ public class ShoppingCartControllerTest {
     @Test
     @DisplayName("Get all items in the shopping cart")
     @WithMockUser(username = "test@net", password = "test", roles = {"USER", "ADMIN"})
-//    @Sql(scripts = {
-//            "classpath:db/book/insert-books-to-books-table.sql",
-//            "classpath:db/role/insert-roles-to-roles-table.sql",
-//            "classpath:db/user/insert-user-to-user-table.sql",
-//            "classpath:db/role_user/insert-role_user-to-role_user-table.sql",
-//            "classpath:db/shopping_cart/insert-shopping_cart-to-shopping_carts-table.sql",
-//            "classpath:db/cart_item/insert-cart_item-to-cart_items-table.sql",
-//    }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = {
-            "classpath:db/cart_item/delete-cart_items-from-cart_items-table.sql",
-            "classpath:db/shopping_cart/delete-shopping_carts-from-shopping_carts-table.sql",
-            "classpath:db/role_user/delete-roles_users-from-user_role-table.sql",
-            "classpath:db/user/delete-users-from-users-table.sql",
-            "classpath:db/role/delete-roles-from-roles-table.sql",
-            "classpath:db/book_category/delete-data-from-book_category-table.sql"
+            "classpath:db/shopping-cart-controller-tests/before/insert-books-to-books-table.sql",
+            "classpath:db/shopping-cart-controller-tests/before/insert-user-to-user-table.sql",
+            "classpath:db/shopping-cart-controller-tests/before/insert-role_user-to-role_user-table.sql",
+            "classpath:db/shopping-cart-controller-tests/before/insert-shopping_cart-to-shopping_carts-table.sql",
+            "classpath:db/shopping-cart-controller-tests/before/insert-cart_item-to-cart_items-table.sql"
+    }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {
+            "classpath:db/shopping-cart-controller-tests/after/delete-cart_items-from-cart_items-table.sql",
+            "classpath:db/shopping-cart-controller-tests/after/delete-shopping_carts-from-shopping_carts-table.sql",
+            "classpath:db/shopping-cart-controller-tests/after/delete-roles_users-from-user_role-table.sql",
+            "classpath:db/shopping-cart-controller-tests/after/delete-users-from-users-table.sql",
+            "classpath:db/shopping-cart-controller-tests/after/delete-books-from-books-table.sql"
     }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void getAllCartItems_ReturnShoppingCartDto_Success() throws Exception {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -162,44 +151,48 @@ public class ShoppingCartControllerTest {
         assertEquals(expected, actual);
     }
 
-//    @Test
-//    @DisplayName("Update quantity of an item in the shopping cart")
-//    @WithMockUser(username = "test@net", password = "test", roles = {"USER", "ADMIN"})
-//    @Sql(scripts = {
-//            "classpath:db/book/insert-books-to-books-table.sql",
-//            "classpath:db/role/insert-roles-to-roles-table.sql",
-//            "classpath:db/user/insert-user-to-user-table.sql",
-//            "classpath:db/role_user/insert-role_user-to-role_user-table.sql",
-//            "classpath:db/shopping_cart/insert-shopping_cart-to-shopping_carts-table.sql",
-//            "classpath:db/cart_item/insert-cart_item-to-cart_items-table.sql",
-//    }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-//    @Sql(scripts = {
-//            "classpath:db/cart_item/delete-cart_items-from-cart_items-table.sql",
-//            "classpath:db/shopping_cart/delete-shopping_carts-from-shopping_carts-table.sql",
-//            "classpath:db/role_user/delete-roles_users-from-user_role-table.sql",
-//            "classpath:db/user/delete-users-from-users-table.sql",
-//            "classpath:db/role/delete-roles-from-roles-table.sql",
-//    }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
-//    public void updateCartItemQuantity_ValidRequest_Success() throws Exception {
-//        CartItemQuantityRequestDto cartItemQuantityRequestDto = new CartItemQuantityRequestDto();
-//        cartItemQuantityRequestDto.setQuantity(3);
-//     //   CartItem beforeChangeQuantityCartItem = cartItemRepository.findById(1L).get();
-//        mockMvc.perform(MockMvcRequestBuilders.put("/api/cart/cart-items/1")
-//                                .contentType(MediaType.APPLICATION_JSON)
-//                                .content(objectMapper.writeValueAsString(
-//                                        cartItemQuantityRequestDto)))
-//                .andExpect(status().isOk());
-//        CartItem actual = cartItemRepository.findById(1L).get();
-//      //  assertNotEquals(beforeChangeQuantityCartItem.getQuantity(), actual.getQuantity());
-//        assertEquals(3, actual.getQuantity());
-//    }
-//
-//    @Test
-//    @DisplayName("Delete an item from the shopping cart")
-//    @WithMockUser(username = "test@net", password = "test", roles = {"USER", "ADMIN"})
-//    public void deleteCartItemById_ValidId_Success() throws Exception {
-//        mockMvc.perform(MockMvcRequestBuilders.delete("/api/cart/cart-items/1")
-//                                .contentType(MediaType.APPLICATION_JSON))
-//                .andExpect(status().isOk());
-//    }
+    @Test
+    @DisplayName("Update quantity of an item in the shopping cart")
+    @WithMockUser(username = "test@net", password = "test", roles = {"USER", "ADMIN"})
+    @Sql(scripts = {
+            "classpath:db/shopping-cart-controller-tests/before/insert-books-to-books-table.sql",
+            "classpath:db/shopping-cart-controller-tests/before/insert-user-to-user-table.sql",
+            "classpath:db/shopping-cart-controller-tests/before/insert-role_user-to-role_user-table.sql",
+            "classpath:db/shopping-cart-controller-tests/before/insert-shopping_cart-to-shopping_carts-table.sql",
+            "classpath:db/shopping-cart-controller-tests/before/insert-cart_item-to-cart_items-table.sql"
+    }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {
+            "classpath:db/shopping-cart-controller-tests/after/delete-cart_items-from-cart_items-table.sql",
+            "classpath:db/shopping-cart-controller-tests/after/delete-shopping_carts-from-shopping_carts-table.sql",
+            "classpath:db/shopping-cart-controller-tests/after/delete-roles_users-from-user_role-table.sql",
+            "classpath:db/shopping-cart-controller-tests/after/delete-users-from-users-table.sql",
+            "classpath:db/shopping-cart-controller-tests/after/delete-books-from-books-table.sql"
+    }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    public void updateCartItemQuantity_ValidRequest_Success() throws Exception {
+        CartItemQuantityRequestDto cartItemQuantityRequestDto = new CartItemQuantityRequestDto();
+        cartItemQuantityRequestDto.setQuantity(3);
+
+        mockMvc.perform(MockMvcRequestBuilders.put("/api/cart/cart-items/10")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(objectMapper.writeValueAsString(
+                                        cartItemQuantityRequestDto)))
+                .andExpect(status().isOk());
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        ShoppingCartDto allCartItems = shoppingCartService.getAllCartItems(authentication);
+        CartItemResponseDto cartItemResponseDto1 = allCartItems.getCartItems().stream()
+                                                           .filter(cartItemResponseDto ->
+                                                                           cartItemResponseDto.getQuantity() ==
+                                                                           3)
+                                                           .findFirst().get();
+        assertEquals(3, cartItemResponseDto1.getQuantity());
+    }
+
+    @Test
+    @DisplayName("Delete an item from the shopping cart")
+    @WithMockUser(username = "test@net", password = "test", roles = {"USER", "ADMIN"})
+    public void deleteCartItemById_ValidId_Success() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.delete("/api/cart/cart-items/1")
+                                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
 }

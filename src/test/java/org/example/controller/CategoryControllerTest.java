@@ -13,7 +13,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.ArrayList;
 import java.util.List;
 import org.example.dto.CategoryDto;
-import org.example.mapper.BookMapper;
 import org.example.service.CategoryService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -43,8 +42,6 @@ class CategoryControllerTest {
 
     private CategoryDto categoryDto1;
     private CategoryDto categoryDto2;
-    @Autowired
-    private BookMapper bookMapper;
 
     @BeforeAll
     static void beforeAll(@Autowired WebApplicationContext applicationContext) {
@@ -66,7 +63,7 @@ class CategoryControllerTest {
 
     @Test
     @DisplayName("Create a new category")
-    @Sql(scripts = {"classpath:db/category/delete-category-from-categories-table.sql"},
+    @Sql(scripts = {"classpath:db/category-controller-tests/after/delete-categories-from-categories-table.sql"},
             executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     @WithMockUser(username = "test", password = "test", roles = {"ADMIN", "USER"})
     void createCategory_ValidCategoryDto_Success() throws Exception {
@@ -85,7 +82,7 @@ class CategoryControllerTest {
 
     @Test
     @DisplayName("Create a new category with invalid data")
-    @Sql(scripts = {"classpath:db/category/delete-category-from-categories-table.sql"},
+    @Sql(scripts = {"classpath:db/category-controller-tests/after/delete-categories-from-categories-table.sql"},
             executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     @WithMockUser(username = "test", password = "test", roles = {"ADMIN", "USER"})
     void createCategory_InvalidData_BadRequest() throws Exception {
@@ -104,7 +101,7 @@ class CategoryControllerTest {
 
     @Test
     @DisplayName("Get all categories")
-    @Sql(scripts = {"classpath:db/category/delete-category-from-categories-table.sql"},
+    @Sql(scripts = {"classpath:db/category-controller-tests/after/delete-categories-from-categories-table.sql"},
             executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     @WithMockUser(username = "test", password = "test", roles = {"ADMIN", "USER"})
     void getAllCategories_ReturnAllCategories() throws Exception {
@@ -127,7 +124,7 @@ class CategoryControllerTest {
 
     @Test
     @DisplayName("Update a category")
-    @Sql(scripts = {"classpath:db/category/delete-category-from-categories-table.sql"},
+    @Sql(scripts = {"classpath:db/category-controller-tests/after/delete-categories-from-categories-table.sql"},
             executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     @WithMockUser(username = "test", password = "test", roles = {"ADMIN", "USER"})
     void updateCategory_ValidCategoryDto_Success() throws Exception {
@@ -145,7 +142,8 @@ class CategoryControllerTest {
 
     @Test
     @DisplayName("Delete a category")
-    @Sql(scripts = {"classpath:db/category/delete-category-from-categories-table.sql"},
+    @Sql(scripts = {
+            "classpath:db/category-controller-tests/after/delete-categories-from-categories-table.sql"},
             executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     @WithMockUser(username = "test", password = "test", roles = {"ADMIN", "USER"})
     void deleteCategory_ValidId_Success() throws Exception {
