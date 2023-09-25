@@ -34,6 +34,9 @@ import org.springframework.data.domain.Pageable;
 
 @ExtendWith(MockitoExtension.class)
 class BookServiceTest {
+    public static final int FIRST_ELEMENT_INDEX = 0;
+    public static final int SECOND_ELEMENT_INDEX = 1;
+    public static final Long BOOK_ID = 1L;
     private Book book1;
     private Book book2;
     @Mock
@@ -117,8 +120,8 @@ class BookServiceTest {
         bookDto2.setIsbn("12345-4565");
         bookDto2.setPrice(new BigDecimal("23.33"));
         expected.add(bookDto2);
-        when(bookMapper.toDto(book1)).thenReturn(expected.get(0));
-        when(bookMapper.toDto(book2)).thenReturn(expected.get(1));
+        when(bookMapper.toDto(book1)).thenReturn(expected.get(FIRST_ELEMENT_INDEX));
+        when(bookMapper.toDto(book2)).thenReturn(expected.get(SECOND_ELEMENT_INDEX));
 
         List<BookDto> actual = bookService.findAll(mock(Pageable.class));
         Assertions.assertEquals(expected, actual);
@@ -127,8 +130,7 @@ class BookServiceTest {
     @Test
     @DisplayName("Verify correct book is returned by ID")
     public void getBookById_WithValidId_ShouldReturnBook() {
-        Long bookId = 1L;
-        when(bookRepository.findById(bookId)).thenReturn(Optional.of(book1));
+        when(bookRepository.findById(BOOK_ID)).thenReturn(Optional.of(book1));
 
         BookDto expected = new BookDto();
         expected.setId(1L);
@@ -138,25 +140,23 @@ class BookServiceTest {
         expected.setPrice(new BigDecimal("23.33"));
 
         when(bookMapper.toDto(book1)).thenReturn(expected);
-        BookDto actual = bookService.getBookById(bookId);
+        BookDto actual = bookService.getBookById(BOOK_ID);
         Assertions.assertEquals(expected, actual);
     }
 
     @Test
     @DisplayName("Verify exception when book is not found by ID")
     public void getBookById_WithInvalidId_ShouldThrowEntityNotFoundException() {
-        Long bookId = 1L;
-        when(bookRepository.findById(bookId)).thenReturn(Optional.empty());
+        when(bookRepository.findById(BOOK_ID)).thenReturn(Optional.empty());
         Assertions.assertThrows(EntityNotFoundException.class,
-                () -> bookService.getBookById(bookId));
+                () -> bookService.getBookById(BOOK_ID));
     }
 
     @Test
     @DisplayName("Verify book is deleted by ID")
     public void deleteBookById_WithValidId_ShouldDeleteBook() {
-        Long bookId = 1L;
-        bookService.deleteBookById(bookId);
-        verify(bookRepository, times(1)).deleteById(bookId);
+        bookService.deleteBookById(BOOK_ID);
+        verify(bookRepository, times(1)).deleteById(BOOK_ID);
     }
 
     @Test
@@ -167,9 +167,8 @@ class BookServiceTest {
         bookRequestDto.setAuthor("Author 1");
         bookRequestDto.setIsbn("12345-566");
         bookRequestDto.setPrice(new BigDecimal("23.33"));
-        Long bookId = 1L;
         when(bookMapper.toEntity(bookRequestDto)).thenReturn(book1);
-        bookService.updateBookById(bookId, bookRequestDto);
+        bookService.updateBookById(BOOK_ID, bookRequestDto);
 
         verify(bookRepository, times(1)).save(book1);
     }
@@ -191,7 +190,8 @@ class BookServiceTest {
 
         List<BookDtoWithoutCategoryIds> expected = new ArrayList<>();
         expected.add(bookDtoWithoutCategoryIds);
-        when(bookMapper.toDtoWithoutCategoryIds(any(Book.class))).thenReturn(expected.get(0));
+        when(bookMapper.toDtoWithoutCategoryIds(any(Book.class))).thenReturn(expected.get(
+                FIRST_ELEMENT_INDEX));
 
         List<BookDtoWithoutCategoryIds> actual = bookService.findAllByCategoryId(anyLong());
         Assertions.assertEquals(expected, actual);

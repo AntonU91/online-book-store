@@ -29,6 +29,7 @@ import org.springframework.data.domain.Pageable;
 
 @ExtendWith(MockitoExtension.class)
 class CategoryServiceTest {
+   private static final Long CATEGORY_ID = 1L;
 
     @Mock
     private CategoryRepository categoryRepository;
@@ -38,6 +39,7 @@ class CategoryServiceTest {
 
     @InjectMocks
     private CategoryServiceImpl categoryService;
+
     private Category category1;
     private Category category2;
     private CategoryDto categoryDto1;
@@ -92,11 +94,9 @@ class CategoryServiceTest {
     @Test
     @DisplayName("Verify exception when category is not found by ID")
     public void getById_WithInvalidId_ShouldThrowEntityNotFoundException() {
-        Long categoryId = 1L;
-
-        when(categoryRepository.findById(categoryId)).thenReturn(Optional.empty());
+        when(categoryRepository.findById(CATEGORY_ID)).thenReturn(Optional.empty());
         Assertions.assertThrows(EntityNotFoundException.class,
-                () -> categoryService.getById(categoryId));
+                () -> categoryService.getById(CATEGORY_ID));
     }
 
     @Test
@@ -126,8 +126,7 @@ class CategoryServiceTest {
         when(categoryRepository.save(updated)).thenReturn(updated);
         when(categoryMapper.toDto(updated)).thenReturn(expected);
 
-        Long categoryId = 1L;
-        CategoryDto actual = categoryService.update(categoryId, expected);
+        CategoryDto actual = categoryService.update(CATEGORY_ID, expected);
 
         Assertions.assertEquals(expected, actual);
     }
@@ -135,8 +134,7 @@ class CategoryServiceTest {
     @Test
     @DisplayName("Verify category is deleted by ID")
     public void deleteCategoryById_WithValidId_ShouldDeleteCategory() {
-        Long categoryId = 1L;
-        categoryService.deleteById(categoryId);
-        verify(categoryRepository, times(1)).deleteById(categoryId);
+        categoryService.deleteById(CATEGORY_ID);
+        verify(categoryRepository, times(1)).deleteById(CATEGORY_ID);
     }
 }

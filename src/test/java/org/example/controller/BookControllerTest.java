@@ -36,8 +36,11 @@ import org.testcontainers.shaded.org.apache.commons.lang3.builder.EqualsBuilder;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class BookControllerTest {
-    public static final Long NON_EXISTED_ID = 100L;
-    protected static MockMvc mockMvc;
+    private static final Long NON_EXISTED_ID = 100L;
+    private static final int FIRST_PAGE_INDEX=0;
+    public static final int PAGE_SIZE = 10;
+
+    private static MockMvc mockMvc;
     @Autowired
     private ObjectMapper objectMapper;
     @Autowired
@@ -106,7 +109,8 @@ class BookControllerTest {
         expected.add(savedBook1);
         expected.add(savedBook2);
 
-        Pageable pageable = PageRequest.of(0, 10);
+        Pageable pageable = PageRequest.of(FIRST_PAGE_INDEX, PAGE_SIZE
+        );
         MvcResult mvcResult =
                 mockMvc.perform(get("/api/books").contentType(MediaType.APPLICATION_JSON)
                                         .param("page", String.valueOf(

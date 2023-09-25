@@ -13,6 +13,8 @@ import org.springframework.test.context.jdbc.Sql;
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class CartItemRepositoryTest {
+    private static final long CART_ITEM_ID = 1L;
+    private static final long SHOPPING_CART_ID = 1L;
     @Autowired
     CartItemRepository cartItemRepository;
     @Autowired
@@ -39,8 +41,9 @@ class CartItemRepositoryTest {
             "classpath:db/cartItem-repository-tests/after/delete-books-from-books-table.sql"
     }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void getCartItem_ValidCartIdAndShoppingCart_Success() {
-        CartItem cartItem = cartItemRepository.findByIdAndShoppingCartId(10L, 10L)
-                                    .get();
+        CartItem cartItem =
+                cartItemRepository.findByIdAndShoppingCartId(CART_ITEM_ID, SHOPPING_CART_ID)
+                        .get();
         assertNotNull(cartItem);
     }
 }

@@ -36,6 +36,9 @@ import org.springframework.web.context.WebApplicationContext;
 @SpringBootTest
 @AutoConfigureMockMvc
 public class ShoppingCartControllerTest {
+    private static final int CART_ITEM_ID = 2;
+    private static final int EXPECTED_QUANTITY = 3;
+    public static final int NON_EXISTED_ID = 1000;
     private static MockMvc mockMvc;
 
     @Autowired
@@ -169,30 +172,71 @@ public class ShoppingCartControllerTest {
             "classpath:db/shopping-cart-controller-tests/after/delete-books-from-books-table.sql"
     }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void updateCartItemQuantity_ValidRequest_Success() throws Exception {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         CartItemQuantityRequestDto cartItemQuantityRequestDto = new CartItemQuantityRequestDto();
-        cartItemQuantityRequestDto.setQuantity(3);
-
-        mockMvc.perform(MockMvcRequestBuilders.put("/api/cart/cart-items/10")
+        cartItemQuantityRequestDto.setQuantity(EXPECTED_QUANTITY);
+        mockMvc.perform(MockMvcRequestBuilders.put("/api/cart/cart-items/{id}", CART_ITEM_ID)
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(objectMapper.writeValueAsString(
                                         cartItemQuantityRequestDto)))
                 .andExpect(status().isOk());
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         ShoppingCartDto allCartItems = shoppingCartService.getAllCartItems(authentication);
         CartItemResponseDto cartItemResponseDto1 = allCartItems.getCartItems().stream()
                                                            .filter(cartItemResponseDto ->
                                                                            cartItemResponseDto.getQuantity() ==
-                                                                           3)
+                                                                           EXPECTED_QUANTITY)
                                                            .findFirst().get();
-        assertEquals(3, cartItemResponseDto1.getQuantity());
+        assertEquals(EXPECTED_QUANTITY, cartItemResponseDto1.getQuantity());
     }
 
     @Test
     @DisplayName("Delete an item from the shopping cart")
     @WithMockUser(username = "test@net", password = "test", roles = {"USER", "ADMIN"})
+    @Sql(scripts = {
+            "classpath:db/shopping-cart-controller-tests/before/insert-books-to-books-table.sql",
+            "classpath:db/shopping-cart-controller-tests/before/insert-user-to-user-table.sql",
+            "classpath:db/shopping-cart-controller-tests/before/insert-role_user-to-role_user-table.sql",
+            "classpath:db/shopping-cart-controller-tests/before/insert-shopping_cart-to-shopping_carts-table.sql",
+            "classpath:db/shopping-cart-controller-tests/before/insert-cart_item-to-cart_items-table.sql"
+    }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {
+            "classpath:db/shopping-cart-controller-tests/after/delete-cart_items-from-cart_items-table.sql",
+            "classpath:db/shopping-cart-controller-tests/after/delete-shopping_carts-from-shopping_carts-table.sql",
+            "classpath:db/shopping-cart-controller-tests/after/delete-roles_users-from-user_role-table.sql",
+            "classpath:db/shopping-cart-controller-tests/after/delete-users-from-users-table.sql",
+            "classpath:db/shopping-cart-controller-tests/after/delete-books-from-books-table.sql"
+    }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void deleteCartItemById_ValidId_Success() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.delete("/api/cart/cart-items/1")
+        mockMvc.perform(MockMvcRequestBuilders.delete("/api/cart/cart-items/{id}", CART_ITEM_ID)
                                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("Update quantity of an item in the shopping cart")
+    @WithMockUser(username = "test@net", password = "test", roles = {"USER", "ADMIN"})
+    @Sql(scripts = {
+            "classpath:db/shopping-cart-controller-tests/before/insert-books-to-books-table.sql",
+            "classpath:db/shopping-cart-controller-tests/before/insert-user-to-user-table.sql",
+            "classpath:db/shopping-cart-controller-tests/before/insert-role_user-to-role_user-table.sql",
+            "classpath:db/shopping-cart-controller-tests/before/insert-shopping_cart-to-shopping_carts-table.sql",
+            "classpath:db/shopping-cart-controller-tests/before/insert-cart_item-to-cart_items-table.sql"
+    }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {
+            "classpath:db/shopping-cart-controller-tests/after/delete-cart_items-from-cart_items-table.sql",
+            "classpath:db/shopping-cart-controller-tests/after/delete-shopping_carts-from-shopping_carts-table.sql",
+            "classpath:db/shopping-cart-controller-tests/after/delete-roles_users-from-user_role-table.sql",
+            "classpath:db/shopping-cart-controller-tests/after/delete-users-from-users-table.sql",
+            "classpath:db/shopping-cart-controller-tests/after/delete-books-from-books-table.sql"
+    }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    public void updateCartItemQuantity_InvalidRequest_NotFound() throws Exception {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        CartItemQuantityRequestDto cartItemQuantityRequestDto = new CartItemQuantityRequestDto();
+        cartItemQuantityRequestDto.setQuantity(EXPECTED_QUANTITY);
+        mockMvc.perform(MockMvcRequestBuilders.put("/api/cart/cart-items/{id}", NON_EXISTED_ID)
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(objectMapper.writeValueAsString(
+                                        cartItemQuantityRequestDto)))
+                .andExpect(status().isNotFound());
     }
 }
