@@ -56,13 +56,13 @@ class BookControllerTest {
         bookRequestDto.setTitle("Book 1");
         bookRequestDto.setAuthor("Author 1");
         bookRequestDto.setIsbn("12345-566");
-        bookRequestDto.setPrice(new BigDecimal("23.33"));
+        bookRequestDto.setPrice(new BigDecimal("23"));
 
         bookRequestDto2 = new CreateBookRequestDto();
         bookRequestDto2.setTitle("Book 2");
         bookRequestDto2.setAuthor("Author 2");
         bookRequestDto2.setIsbn("12345-445245");
-        bookRequestDto2.setPrice(new BigDecimal("27.33"));
+        bookRequestDto2.setPrice(new BigDecimal("27"));
     }
 
     @BeforeAll
