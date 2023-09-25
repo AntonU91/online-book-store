@@ -1,1 +1,2 @@
-DELETE FROM book_category;
+DELETE
+FROM book_category;

@@ -63,8 +63,9 @@ class CategoryControllerTest {
 
     @Test
     @DisplayName("Create a new category")
-    @Sql(scripts = {"classpath:db/category-controller-tests/after/delete-categories-from-categories-table.sql"},
-            executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    @Sql(scripts = {"classpath:db/category-controller-tests/"
+                    + "after/delete-categories-from-categories-table.sql"},
+                executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     @WithMockUser(username = "test", password = "test", roles = {"ADMIN", "USER"})
     void createCategory_ValidCategoryDto_Success() throws Exception {
         CategoryDto expected = categoryService.save(categoryDto1);
@@ -82,8 +83,9 @@ class CategoryControllerTest {
 
     @Test
     @DisplayName("Create a new category with invalid data")
-    @Sql(scripts = {"classpath:db/category-controller-tests/after/delete-categories-from-categories-table.sql"},
-            executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    @Sql(scripts = {"classpath:db/category-controller-tests/"
+                    + "after/delete-categories-from-categories-table.sql"},
+                executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     @WithMockUser(username = "test", password = "test", roles = {"ADMIN", "USER"})
     void createCategory_InvalidData_BadRequest() throws Exception {
         CategoryDto invalidCategoryRequest = new CategoryDto();
@@ -101,8 +103,9 @@ class CategoryControllerTest {
 
     @Test
     @DisplayName("Get all categories")
-    @Sql(scripts = {"classpath:db/category-controller-tests/after/delete-categories-from-categories-table.sql"},
-            executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    @Sql(scripts = {"classpath:db/category-controller-tests/"
+                    + "after/delete-categories-from-categories-table.sql"},
+                 executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     @WithMockUser(username = "test", password = "test", roles = {"ADMIN", "USER"})
     void getAllCategories_ReturnAllCategories() throws Exception {
         CategoryDto savedCategory1 = categoryService.save(categoryDto1);
@@ -124,8 +127,9 @@ class CategoryControllerTest {
 
     @Test
     @DisplayName("Update a category")
-    @Sql(scripts = {"classpath:db/category-controller-tests/after/delete-categories-from-categories-table.sql"},
-            executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    @Sql(scripts = {"classpath:db/category-controller-tests/"
+                    + "after/delete-categories-from-categories-table.sql"},
+                executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     @WithMockUser(username = "test", password = "test", roles = {"ADMIN", "USER"})
     void updateCategory_ValidCategoryDto_Success() throws Exception {
         CategoryDto savedCategory = categoryService.save(categoryDto1);
@@ -142,9 +146,9 @@ class CategoryControllerTest {
 
     @Test
     @DisplayName("Delete a category")
-    @Sql(scripts = {
-            "classpath:db/category-controller-tests/after/delete-categories-from-categories-table.sql"},
-            executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    @Sql(scripts = {"classpath:db/category-controller-tests/"
+                    + "after/delete-categories-from-categories-table.sql"},
+                 executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     @WithMockUser(username = "test", password = "test", roles = {"ADMIN", "USER"})
     void deleteCategory_ValidId_Success() throws Exception {
         CategoryDto savedCategory = categoryService.save(categoryDto1);

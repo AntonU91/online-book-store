@@ -37,14 +37,16 @@ import org.testcontainers.shaded.org.apache.commons.lang3.builder.EqualsBuilder;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class BookControllerTest {
     private static final Long NON_EXISTED_ID = 100L;
-    private static final int FIRST_PAGE_INDEX=0;
-    public static final int PAGE_SIZE = 10;
-
+    private static final int FIRST_PAGE_INDEX = 0;
+    private static final int PAGE_SIZE = 10;
     private static MockMvc mockMvc;
+
     @Autowired
     private ObjectMapper objectMapper;
+
     @Autowired
     private BookService bookService;
+
     private CreateBookRequestDto bookRequestDto;
     private CreateBookRequestDto bookRequestDto2;
 
@@ -73,7 +75,7 @@ class BookControllerTest {
     @Test
     @DisplayName("Create a new book")
     @Sql(scripts = {"classpath:db/book-controller-test/after/delete-books-from-books-table.sql"},
-            executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+                 executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     @WithMockUser(username = "test", password = "test", roles = {"ADMIN", "USER"})
     void createBook_ValidCreateBookRequestDto_Success() throws Exception {
         BookDto expected = new BookDto();
@@ -99,7 +101,7 @@ class BookControllerTest {
     @Test
     @DisplayName("Get all books")
     @Sql(scripts = {"classpath:db/book-controller-test/after/delete-books-from-books-table.sql"},
-            executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+                 executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     @WithMockUser(username = "test", password = "test", roles = {"ADMIN", "USER"})
     void getAllBooks_ReturnAllAvailableBook() throws Exception {
         BookDto savedBook1 = bookService.save(bookRequestDto);
@@ -128,7 +130,7 @@ class BookControllerTest {
     @Test
     @DisplayName("Update an existing book")
     @Sql(scripts = {"classpath:db/book-controller-test/after/delete-books-from-books-table.sql"},
-            executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+                 executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     @WithMockUser(username = "test", password = "test", roles = {"ADMIN", "USER"})
     void updateBook_ValidUpdateBookRequestDto_Success() throws Exception {
         BookDto expected = bookService.save(bookRequestDto);
@@ -147,7 +149,7 @@ class BookControllerTest {
     @Test
     @DisplayName("Delete an existing book")
     @Sql(scripts = {"classpath:db/book-controller-test/after/delete-books-from-books-table.sql"},
-            executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+                 executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     @WithMockUser(username = "test", password = "test", roles = {"ADMIN", "USER"})
     void deleteBook_ValidId_Success() throws Exception {
         BookDto savedBook = bookService.save(bookRequestDto);
@@ -159,7 +161,7 @@ class BookControllerTest {
     @Test
     @DisplayName("Create a new book with invalid data")
     @Sql(scripts = {"classpath:db/book-controller-test/after/delete-books-from-books-table.sql"},
-            executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+                 executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     @WithMockUser(username = "test", password = "test", roles = {"ADMIN", "USER"})
     void createBook_InvalidData_BadRequest() throws Exception {
         CreateBookRequestDto invalidBookRequest = new CreateBookRequestDto();
@@ -175,7 +177,7 @@ class BookControllerTest {
     @Test
     @DisplayName("Get a book by existed id")
     @Sql(scripts = {"classpath:db/book-controller-test/after/delete-books-from-books-table.sql"},
-            executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+                 executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     @WithMockUser(username = "test", password = "test", roles = {"ADMIN", "USER"})
     void getBookById_ValidId_Success() throws Exception {
         BookDto expected = bookService.save(bookRequestDto);
@@ -192,7 +194,7 @@ class BookControllerTest {
     @Test
     @DisplayName("Get a book by non-existed id")
     @Sql(scripts = {"classpath:db/book-controller-test/after/delete-books-from-books-table.sql"},
-            executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+                 executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     @WithMockUser(username = "test", password = "test", roles = {"ADMIN", "USER"})
     void getBookById_NonExistedId_BadRequest() throws Exception {
         mockMvc.perform(get("/api/books/{id}", NON_EXISTED_ID))

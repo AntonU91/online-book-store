@@ -29,7 +29,7 @@ import org.springframework.data.domain.Pageable;
 
 @ExtendWith(MockitoExtension.class)
 class CategoryServiceTest {
-   private static final Long CATEGORY_ID = 1L;
+    private static final Long CATEGORY_ID = 1L;
 
     @Mock
     private CategoryRepository categoryRepository;

@@ -1,1 +1,2 @@
-DELETE FROM roles;
+DELETE
+FROM roles;

@@ -20,14 +20,20 @@ class BookRepositoryTest {
 
     @Test
     @DisplayName("Find all books by specified category ID")
-    @Sql(scripts = {"classpath:db/book-repo-tests/before/insert-books-to-books-table.sql",
-            "classpath:db/book-repo-tests/before/insert-categories-to-categories-table.sql",
-            "classpath:db/book-repo-tests/before/insert-book_category-to-book_category-table.sql"
-    }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {"classpath:db/book-repo-tests/after/delete-book_category-from-book_category-table.sql",
-            "classpath:db/book-repo-tests/after/delete-books-from-books-table.sql",
-            "classpath:db/book-repo-tests/after/delete-category-from-categories-table.sql"
-    }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    @Sql(scripts = {"classpath:db/book-repo-tests/"
+                    + "before/insert-books-to-books-table.sql",
+            "classpath:db/book-repo-tests/"
+            + "before/insert-categories-to-categories-table.sql",
+            "classpath:db/book-repo-tests/"
+            + "before/insert-book_category-to-book_category-table.sql"
+                    }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {"classpath:db/book-repo-tests/"
+                    + "after/delete-book_category-from-book_category-table.sql",
+            "classpath:db/book-repo-tests/"
+            + "after/delete-books-from-books-table.sql",
+            "classpath:db/book-repo-tests/"
+            + "after/delete-category-from-categories-table.sql"
+                    }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void findAllByCategoryId_ValidId_ShouldReturnListOfBook() {
         List<Book> booksList = bookRepository.getAllByCategoriesId(CATEGORY_ID);
         Assertions.assertEquals(EXPECTED_LIST_SIZE, booksList.size());

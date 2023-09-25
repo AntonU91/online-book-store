@@ -1,6 +1,5 @@
 package org.example.service;
 
-import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.when;
 
@@ -22,6 +21,7 @@ import org.example.repository.ShoppingCartRepository;
 import org.example.repository.UserRepository;
 import org.example.service.impl.ShoppingCartServiceImpl;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -57,8 +57,8 @@ class ShoppingCartServiceTest {
     @Mock
     private Authentication authentication;
 
-
     @Test
+    @DisplayName("Add new cart item")
     void addItemToCar_ValidCartItem_ShouldAddCartItem() {
         CartItemRequestDto cartItemRequestDto = new CartItemRequestDto();
         cartItemRequestDto.setBookId(1L);
@@ -90,7 +90,8 @@ class ShoppingCartServiceTest {
     }
 
     @Test
-    void getAllCartItems_ShouldReturnShoppingCart() {
+    @DisplayName("Get all cart items")
+    void getAllCartItems_ShouldReturnCartItems() {
         User user = new User();
         user.setId(1L);
 
@@ -103,7 +104,6 @@ class ShoppingCartServiceTest {
         cartItem2.setId(2L);
         cartItem2.setBook(new Book());
         cartItem2.setQuantity(3);
-        Set<CartItem> cartItems = Set.of(cartItem1, cartItem2);
 
         CartItemResponseDto cartItemResponseDto1 = new CartItemResponseDto();
         cartItemResponseDto1.setId(cartItem1.getId());
@@ -114,6 +114,7 @@ class ShoppingCartServiceTest {
         Set<CartItemResponseDto> cartItemResponseDtoSet =
                 Set.of(cartItemResponseDto1, cartItemResponseDto2);
 
+        Set<CartItem> cartItems = Set.of(cartItem1, cartItem2);
         ShoppingCart shoppingCart = new ShoppingCart();
         shoppingCart.setId(1L);
         shoppingCart.setCartItems(cartItems);
@@ -136,6 +137,7 @@ class ShoppingCartServiceTest {
     }
 
     @Test
+    @DisplayName("Update quantity of existing cart item")
     void updateBookQuantity_ValidQuantity_ShouldUpdate() {
         CartItemQuantityRequestDto cartItemQuantityRequestDto = new CartItemQuantityRequestDto();
         cartItemQuantityRequestDto.setQuantity(20);
