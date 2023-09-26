@@ -9,6 +9,7 @@ import org.example.mapper.CategoryMapper;
 import org.example.model.Category;
 import org.example.repository.CategoryRepository;
 import org.example.service.CategoryService;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +21,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public List<CategoryDto> findAll(Pageable pageable) {
-        List<Category> categories = categoryRepository.findAll();
+        Page<Category> categories = categoryRepository.findAll(pageable);
         return categories.stream()
                        .map(categoryMapper::toDto)
                        .collect(Collectors.toList());

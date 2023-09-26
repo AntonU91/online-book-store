@@ -1,0 +1,8 @@
+databaseChangeLog:
+- changeSet:
+    id: 1693217131496-15
+    author: ваш_автор
+    objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+    changes:
+      - modifySql:
+          sql: ALTER TABLE shopping_carts ALTER COLUMN is_deleted SET DEFAULT false

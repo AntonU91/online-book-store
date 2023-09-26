@@ -27,6 +27,7 @@ services:
       SPRING_DATASOURCE_URL: jdbc:mysql://database:${MYSQLDB_DOCKER_PORT}/${MYSQLDB_DATABASE}?serverTimezone=Europe/Kiev
       SPRING_DATASOURCE_USERNAME: ${MYSQLDB_USER}
       SPRING_DATASOURCE_PASSWORD: ${MYSQLDB_ROOT_PASSWORD}
+      JAVA_TOOL_OPTIONS: "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005"
     ports:
       - "${SPRING_LOCAL_PORT}:${SPRING_DOCKER_PORT}"
       - "${DEBUG_PORT}:${DEBUG_PORT}"

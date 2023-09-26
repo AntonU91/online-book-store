@@ -21,3 +21,8 @@ databaseChangeLog:
       file: db/create-table-orders.yaml
   - include:
       file: db/create-table-order_items.yaml
+  - include:
+      file: db/set-default_value-column-is_deleted-to-false-cart_items-table.yaml
+  - include:
+      file: db/set-default_value-column-is_deleted-to-false-shopping_carts-table.yaml
+
