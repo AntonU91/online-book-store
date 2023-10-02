@@ -3,7 +3,7 @@
 
 ## Introduction
 
-The Online Book Store API is a comprehensive solution for managing user authentication, book management, category management, order placement, and shopping cart functionality. This API is designed to provide a seamless experience for both book enthusiasts and administrators. Whether you're looking to purchase books, manage your shopping cart, or administer your bookstore, this API has you covered.
+The Online Book Store API is a comprehensive solution for book management, category management, order placement, and shopping cart functionality. This API is designed to provide a seamless experience for both book enthusiasts and administrators. Whether you're looking to purchase books, manage your shopping cart, or administer your bookstore, this API has you covered.
 
 ## Technologies and Tools Used
 
